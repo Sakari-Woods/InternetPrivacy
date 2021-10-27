@@ -1,0 +1,20 @@
+{
+	"data":{
+		"privacyquestion": "Is this where you live?",
+		"gotitright": "Did I get it right?",
+		"privacymore": "Since you've visited this website, here are some more things that I found:",
+		"operatingsystem": "Your operating system is: ",
+		"battery": "Your battery level is: ",
+		"claim": "Do you find this uncomfortable?\nPrivacy is hard to come by these days.\n\nClick here to learn more",
+		"articletitle": "Privacy in the Digital World",
+		"articlebody": "67% of internet users in the US are not aware of their country's privacy and data protection rules. While internet users have settled into daily habits of checking their Facebook accounts or browsing stories on Reddit, more than 12 data points are available for businesses and third-party companies to take advantage of. While a user may feel that their privacy is secure with a site that they are familiar with (with 3% of the American population understanding privacy regulations), their personal data can still be sold and auctioned off to the highest bidder.<br><br> This shift in aggressive privacy tactis has been a slow and steady decline. Because many internet users do not know how much of their data is being collected, there is less resistance to businesses employing these tactics. After time, the use of these collection methods can become industry standard and slowly engrain themselves into the status quo of what users should expect when browser online. Below are a few items that should be considered when developing or participating on the internet.",
+		"rule1": "The right to know",
+		"rule1c": "Every user should be able to have a comprehensible list of any private information currently being captured and traded. Many companies have taken the guise of digital personalization too far, and are now aggressively tracking any and all possible information that can be provided by a user. This occurs even when a user leaves the site, tracking them throughout their internet session.",
+		"rule2": "Choosing what to share",
+		"rule2c": "While similar to understanding what he being captured, a user should have the option without penalization on whether their privacy information is to be collected. This would mean that if a user chooses not to disclose personal information, they should still be able to use the site. Many websites will enforce cookie and/or data collection as a requirement to use their services. This originally consisted of an email newsletter popup, but has now turned into something much more sinister.",
+		"rule3": "Sharing does not mean sharing with others",
+		"rule3c": "Often times when a user agrees to share their data, they are unaware of just how many third-party businesses and organizations will also participate in the collection of your personal data. When agreeing to a website to track cookies or actions, they often admit in their terms and privacy policies that they will not be liable for the personal data after it has been traded. By visiting just one site, a user may have their data traded and auctioned off to hundreds of other companies, each employing thousands of employees who may have access to the user's data.",
+		"rule4": "The option to disappear",
+		"rule4c": "With many websites requiring users to give their personal information or consent to cross-site cookie tracking, there should always be the option where users can opt-out of having their private information collected and shared. While some sites provide an option to decline cookies, many do not. Some cookies can operate across other sites, updating the original company with the different sites you navigate to in the hopes that they might glean more information to be used for buying power."
+	}
+}

@@ -1,7 +1,7 @@
 // Request the location of the user, if it isn't already stored via cookies.
 if(document.cookie.length < 1){
 	let locrequest = new XMLHttpRequest();
-	locrequest.open('GET', 'http://sakaribox.ddns.net/locationcontent');
+	locrequest.open('GET', '/locationcontent');
 	locrequest.responseType = 'json';
 	locrequest.send();
 
@@ -14,7 +14,7 @@ if(document.cookie.length < 1){
 // Receive the content for the website via JSON file.
 // This sets the pageContent variable for later use.
 let request = new XMLHttpRequest();
-request.open('GET', 'http://sakaribox.ddns.net/sitecontent');
+request.open('GET', '/sitecontent');
 request.responseType = 'json';
 request.send();
 var pageContent;
@@ -57,4 +57,5 @@ function initMap() {
 		zoomControl: false,
 		zoom: 2});
 	},1000);
+	console.log("123")
 }

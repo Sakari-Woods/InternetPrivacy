@@ -1,8 +1,9 @@
 html, body {
-  background-color: white;
-  height 100%;
+  background-color:  #fafafa;
+  height: 100%;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
 }
 
 #map{
@@ -17,69 +18,54 @@ html, body {
   padding:50px;
   padding-left:20%;
   padding-right:20%;
-  background-color: white;
+  background-color:white;
 }
-.leftsection{
+.box {
   width:50%;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px #afafaf;
+  background-color:#FAFAFA;
+  border-radius: 15px;
+}
+.leftsection{  
   height:300px;
   float: left;
-  background-color:white;
   padding: 20px;
   margin-bottom:50px;
-  background-color:white;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
 }
 .rightsection{
-  width:50%;
   height:300px;
   float: right;
-  background-color:white;
   padding: 20px;
   margin-bottom:50px;
-  background-color:white;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
 }
 .fullsection{
   float: center;
-  background-color:white;
   padding: 50px;
   padding-left: 20%;
   padding-right: 20%;
   margin: 20px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
+
 }
 .splitsection{
   width:100%;
   background-color:white;
   margin: 20px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
 }
 .splitleft{
   display:flex;
   position:relative;
   float: left;
-  width: 50%;
-  background-color:white;
   padding: 50px;
   margin: 20px;
   margin-right:0px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
 }
 .splitright{
   align-content: center;
   display:flex;
   position:relative;
   float: right;
-  width: 50%;
-  background-color:white;
   padding: 40px;
   margin: 20px;
   margin-left:0px;
-  border-radius: 15px;
-  box-shadow: 1px 1px 4px #BCBCBC;
 }

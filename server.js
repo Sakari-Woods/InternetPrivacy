@@ -14,6 +14,7 @@ const http = require('http');
 const fs = require('fs');
 var app = express();
 
+
 // Grab the API key for ipstack.com in order to get latitude and longitude data from the user.
 var accessKey = process.env.IPSTACK_API;
 

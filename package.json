@@ -4,15 +4,12 @@
   "description": "An interactive privacy website demonstrating how user data can be captured from their web browser, and examples of how this data is then used in real scenarios.",
   "main": "server.js",
   "dependencies": {
-    "baguettebox.js": "^1.11.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "forever": "^4.0.1",
-    "jquery": "^3.6.0",
     "node-fetch": "^3.0.0",
-    "npm": "^8.1.2",
-    "scrollreveal": "^4.0.9"
+    "npm": "^8.1.2"
   },
   "devDependencies": {},
   "scripts": {

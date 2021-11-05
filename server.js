@@ -34,24 +34,28 @@ app.get('/', (req, res) => {
 	if a user has visited the site before.
 */
 app.get('/locationcontent', (req, res) => {
-	var cookie = req.cookies.city;
-	var cookieContent = '';
+	var cookie = req.cookies.key;
 	if(cookie === undefined){
 		// Grab the location of the connected ip and save it to the cookie.
 		var address = req.socket.remoteAddress;
 		address = address.substring(address.lastIndexOf(":")+1,address.length);
 		http.get('http://api.ipstack.com/'+address+"/?access_key="+accessKey, (resp) => {
 			let data = '';
+			let key = randomKey();
+			function randomKey(){
+				let keyCode = "";
+				for (let i = 0; i < 256; i++){
+					keyCode += String.fromCharCode(Math.floor(Math.random() * 127));
+				}
+				return keyCode;
+			}
+			
 			resp.on('data', (chunk) => {
 				data = JSON.parse(chunk);
-				//cookieContent += data.latitude+","+data.longittude+","+data.city;
-				res.cookie('latitude', data.latitude);
-				res.cookie('longitude', data.longitude);
-				res.cookie('city', data.city);
+				res.cookie('key', key);
 			});
 			resp.on('end', () => {
-				console.log(data);
-				console.log("sending location data in cookie.");
+				console.log("Key saved");
 				res.send("Succcess");
 			});
 		});

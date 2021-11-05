@@ -57,5 +57,5 @@ function initMap() {
 		zoomControl: false,
 		zoom: 2});
 	},1000);
-	console.log("123")
+
 }

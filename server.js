@@ -11,6 +11,7 @@ require('dotenv').config()
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 var app = express();
 
@@ -23,6 +24,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const pageContentFile = fs.readFileSync("./public/content.json");
 
+// Random Key Generator.
+function randomKey(){
+	let keyCode = "";
+	for (let i = 0; i < 256; i++){
+		keyCode += String.fromCharCode(Math.floor(Math.random() * 127));
+	}
+	return keyCode;
+}
+
 app.get('/', (req, res) => {
 	res.sendFile('/public/index.html', {root: __dirname});
 });
@@ -33,35 +43,50 @@ app.get('/', (req, res) => {
 	This reduces the amount of calls on the ipstack.com API, and also demonstrates how cookies can be used to identify
 	if a user has visited the site before.
 */
-app.get('/locationcontent', (req, res) => {
+app.get('/key', (req, res) => {
 	var cookie = req.cookies.key;
 	if(cookie === undefined){
-		// Grab the location of the connected ip and save it to the cookie.
+		// No key present, so query the ip and grab the latitude and longitude used for the map. 
+		let key = randomKey();
+
+		//TODO query database if the key exists, and if so, send all of the information needed to the user.
+
+
+		// Else, key does not exist in database.
+		// Use the ip address and call ipstack to get latitude and longitude to store in database.
 		var address = req.socket.remoteAddress;
 		address = address.substring(address.lastIndexOf(":")+1,address.length);
-		http.get('http://api.ipstack.com/'+address+"/?access_key="+accessKey, (resp) => {
+
+		// Check the address to make sure it is not localhost.
+		// If the address is empty, the ip-api site automatically uses the ip address from the requesting computer.
+		// Which would be this server. Useful when in development.
+		if(address == "0.0.0.0" || address == "127.0.0.1"){
+			address = "";
+		}
+		http.get('http://ip-api.com/json/', (resp) => {
 			let data = '';
-			let key = randomKey();
-			function randomKey(){
-				let keyCode = "";
-				for (let i = 0; i < 256; i++){
-					keyCode += String.fromCharCode(Math.floor(Math.random() * 127));
-				}
-				return keyCode;
-			}
 			
 			resp.on('data', (chunk) => {
 				data = JSON.parse(chunk);
 				res.cookie('key', key);
+
+				// Temporarily setting the latitude and longitude for the map to work as cookies.
+				//TODO remove these lat/lon cookies 
+				res.cookie('lat',data.lat);
+				res.cookie('lon',data.lon);
 			});
 			resp.on('end', () => {
 				console.log("Key saved");
-				res.send("Succcess");
+				console.log(data);
+				res.send('Success');
 			});
 		});
 	}
 });
 
+//TODO refactor the sitecontent, we should make several queries here where we can get data from the database
+// without opening it up to sql injections.
+// Example queries could be '/location' which would return lat/lon values, '/device' to return all device info, etc.
 /*  Sends the content.json file to the site. This is used to access the actual content of the website,
 	and dynamically generate/fill different sections of the website as the user navigates to them.
 */

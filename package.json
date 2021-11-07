@@ -13,9 +13,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "sudo node server.js",
-    "online": "sudo forever start server.js",
-    "offline": "sudo forever stop server.js"
+    "start": "node server.js",
+    "online": "forever start server.js",
+    "offline": "forever stop server.js"
   },
   "author": "Sakari Woods",
   "license": "ISC"

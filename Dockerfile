@@ -19,7 +19,7 @@ COPY . /app
 CMD ["npm", "start"]
 
 
-# Usage:
+# Usage: (No longer necesarry with docker-compose functionality added)
 
 # Building an image:
 #
@@ -28,19 +28,31 @@ CMD ["npm", "start"]
 #
 # ex: docker build -t internet-privacy .
 
+# Defining a network:
+#
+# docker network create <net_name>
+#
+# ex: docker network create 397net
+
 # To create a container of the image:
 #
-# docker run    [--name option - user selected name for the container (must be the name in example due to network dependencies)] <name>
+# docker run    [--rm option - automatically removes container when it exits]
+#               [--name option - user selected name for the container (must be the name in example due to network dependencies)] 
+#                   <name>
+#               [--net option - connects container to a user defined network, allows containers to connect through aliases] 
+#                   <net_name>
 #               [-it option - for interactive-terminal upon execution]
 #               [-d option - to run the container in detached mode (in place of -it option)]
-#               [-p option - for mapping the internal docker port to an available external port] <extport>:<intport>
+#               [-p option - for mapping the internal docker port to an available external port] 
+#                   <extport>:<intport>
 #               [-v option - necessarry for mounting to a volume that docker can look to for local changes while using nodemon]
+#                   <cwd>:<docker_workdir>
 #               <image_name>
 #
-# ex: docker run --name priv-website -it -p 9000:80 internet-privacy
-# ex: docker run --name priv-website -d -p 9000:80 internet-privacy
-# *ex: docker run --name priv-website -it -p 9000:80 -v $(pwd):/app internet-privacy
+#  ex: docker run --rm --name priv-website --net 397net -it -p 9000:80 internet-privacy
+#  ex: docker run --rm --name priv-website --net 397net -d -p 9000:80 internet-privacy
+# *ex: docker run --rm --name priv-website --net 397net -it -p 9000:80 -v $(pwd):/app internet-privacy
 #
-# *use this command so nodemon works and the docker image doesn't need to be rebuilt everytime the source is modified
+# *use this command so nodemon works and the docker image doesn't need to be rebuilt everytime source files are modified
 
 # To view the site, type in localhost:<extport> to your browser

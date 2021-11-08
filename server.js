@@ -7,13 +7,14 @@
 		google maps API: Renders a google maps view when taking in the above latitude and longitude as input.
 */
 var express = require('express');
-require('dotenv').config()
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
 var app = express();
+const PORT = process.env.NODE_DOCKER_PORT || 80;
 
 
 // Grab the API key for ipstack.com in order to get latitude and longitude data from the user.
@@ -108,6 +109,6 @@ app.get('/sitecontent', (req, res) => {
 	(Note: Upgrading to https will require switching the port to 443, but will also force the user to receive
 	a popup screen stating that self-signed certificates are unsafe. To avoid this, http has been preferred.
 */
-var server = app.listen(80, () => {
-	console.log("Server is running on port 80.");
+var server = app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}.`);
 });

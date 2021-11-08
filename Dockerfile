@@ -28,12 +28,13 @@ CMD ["npm", "start"]
 # ex: docker build -t internet-privacy .
 
 # To create a containter of the image:
-# docker run    [-it option for interactive-terminal upon execution]
+# docker run    [--name option user selected name for the container (must be the name in example due to network dependencies)] <name>
+#               [-it option for interactive-terminal upon execution]
 #               [-d option to run the container in detached mode (in place of -it option)]
 #               [-p option for mapping the internal docker port to an available external port] <extport>:<intport>
 #               <image_name>
 #
-# ex: docker run -it -p 9000:80 internet-privacy
-# ex: docker run -d -p 9000:80 internet-privacy
+# ex: docker run --name priv-website -it -p 9000:80 internet-privacy
+# ex: docker run --name priv-website -d -p 9000:80 internet-privacy
 
 # To view the site, type in localhost:<extport> to your browser

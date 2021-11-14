@@ -97,7 +97,7 @@ $(window).on("load",function() {
 				$("#sell").text("Buy an umbrella to stay dry.")
 			} 	else if (response.current.weather[0].main === "Clouds"){
 				$("#sell").text("Buy a hoody to stay warm.")
-			} 	else if (response.current.weather[0].main === "Misty"){
+			} 	else if (response.current.weather[0].main === "Mist"){
 				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this.")
 			}	else if (response.current.weather[0].main === "Clear"){
 				$("#sell").text("A nice pair of shades would compliment this weather.")
@@ -135,10 +135,10 @@ $(window).on("load",function() {
 			$("#mmedian").text(responds.results[0].fields.acs.demographics.Sex.Male.percentage * 100  + "% of population male");
 			$("#amedian").text(responds.results[0].fields.acs.demographics['Median age'].Total.value + " years is the average age");
 			$("#economics").text(responds.results[0].fields.acs.economics['Median household income'].Total.value + " dollars annually is the average household income")
-			$("#latino").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Hispanic or Latino'].percentage * 100 + "% chance you identify as Hispanic or Latino");
-			$("#white").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: White alone'].percentage * 100 + "% chance you identify as Caucasian");
-			$("#black").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Black or African American alone'].percentage * 100 + "% chance you identify as Black or African American");
-			$("#asian").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Asian alone'].percentage * 100 + "% chance you identify as Asian");
+			$("#latino").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Hispanic or Latino'].percentage * 100).toFixed(1) + "% chance you identify as Hispanic or Latino");
+			$("#white").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: White alone'].percentage * 100).toFixed(1) + "% chance you identify as Caucasian");
+			$("#black").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Black or African American alone'].percentage * 100).toFixed(1) + "% chance you identify as Black or African American");
+			$("#asian").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Asian alone'].percentage * 100).toFixed(1) + "% chance you identify as Asian");
 			$("#female").text("As a woman you are ")
 			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Divorced'].percentage * 100) + "% likely to be divorced, ")
 			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Now married'].percentage * 100) + "% likely to be married, ")

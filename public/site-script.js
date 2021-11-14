@@ -85,16 +85,23 @@ $(document).ready(function() {
         method: "GET"
         }).then(function(response) { 
 			console.log(response);
-			var time = moment().format('llll');
-			$("#currCity").text(response.name+ "  ");
-			$("#currCity").append(time);
-			wData.lat = lat;
-			wData.long = long;
-			$("#icon").empty(iconSelector(response.weather[0].icon));       
-			$("#icon").append(iconSelector(response.weather[0].icon));       
-			$("#cWind").text("wind Speed: " + response.wind.speed +" mph");
-			$("#cTemp").text("Temperature: " + ((response.main.temp -273.15)/5*9 + 32).toFixed(1) +" F");
-			$("#cHum").text("Humidity: " + response.main.humidity +"%");
+			// var time = moment().format('llll');
+			// $("#currCity").text(response.name+ "  ");
+			// $("#currCity").append(time);
+			// wData.lat = lat;
+			// wData.long = long;
+			$("#icon").empty(iconSelector(response.current.weather[0].icon));       
+			$("#icon").append(iconSelector(response.current.weather[0].icon));
+			console.log(response.current.weather[0].icon);    
+			if (response.current.weather[0].main === "Rain"){
+				$("#sell").text("Buy an umbrella to stay dry")
+			} else if (response.current.weather[0].main === "Clouds"){
+				$("#sell").text("Buy a hoody to stay warm")
+			} 
+			// $("#Wind").text("wind Speed: " + response.current.wind_speed +" mph");
+			// console.log("wind Speed: " + response.current.wind_speed +" mph");
+			// $("#Temp").text("Temperature: " + ((response.current.temp -273.15)/5*9 + 32).toFixed(1) +" F");
+			// $("#Hum").text("Humidity: " + response.current.humidity +"%");
 		});
     
     }
@@ -114,8 +121,11 @@ $(document).ready(function() {
 			method: "GET"
         }).then(function(responds) {
 			console.log(responds);
+			$("#fmedian").text(responds.results[0].fields.acs.demographics.Sex.Female.percentage * 100 + "% of population female");
+			$("#mmedian").text(responds.results[0].fields.acs.demographics.Sex.Male.percentage * 100  + "% of population male");
+			$("#amedian").text(responds.results[0].fields.acs.demographics['Median age'].Total.value + " years is the average age");
+			$("#economics").text(responds.results[0].fields.acs.economics['Median household income'].Total.value + " dollars annually is the average household income")
 		})
 	}
 
 })
-

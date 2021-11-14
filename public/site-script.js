@@ -59,7 +59,7 @@ function initMap() {
 
 }
 //below this comment is the JQuery to handle API requests
-$(document).ready(function() {
+$(window).on("load",function() {
     var wData = {
       cityName: "",
       lat: null,
@@ -94,10 +94,12 @@ $(document).ready(function() {
 			$("#icon").append(iconSelector(response.current.weather[0].icon));
 			console.log(response.current.weather[0].icon);    
 			if (response.current.weather[0].main === "Rain"){
-				$("#sell").text("Buy an umbrella to stay dry")
+				$("#sell").text("Buy an umbrella to stay dry.")
 			} else if (response.current.weather[0].main === "Clouds"){
-				$("#sell").text("Buy a hoody to stay warm")
-			} 
+				$("#sell").text("Buy a hoody to stay warm.")
+			} else if (response.current.weather[0].main === "Misty"){
+				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this.")
+			}
 			// $("#Wind").text("wind Speed: " + response.current.wind_speed +" mph");
 			// console.log("wind Speed: " + response.current.wind_speed +" mph");
 			// $("#Temp").text("Temperature: " + ((response.current.temp -273.15)/5*9 + 32).toFixed(1) +" F");

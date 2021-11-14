@@ -139,7 +139,7 @@ $(window).on("load",function() {
 			$("#white").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: White alone'].percentage * 100 + "% chance you identify as Caucasian");
 			$("#black").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Black or African American alone'].percentage * 100 + "% chance you identify as Black or African American");
 			$("#asian").text(responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Asian alone'].percentage * 100 + "% chance you identify as Asian");
-			$("#female").text("As a women you are ")
+			$("#female").text("As a woman you are ")
 			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Divorced'].percentage * 100) + "% likely to be divorced, ")
 			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Now married'].percentage * 100) + "% likely to be married, ")
 			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Never married'].percentage * 100) + "% likely to have not been married and ")

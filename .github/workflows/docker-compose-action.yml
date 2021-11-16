@@ -1,12 +1,17 @@
-name: GitHub Actions Demo
+name: Docker Test
 on: [push]
 jobs:
-  Test-Build-Docker-Compose:
+  Docker-Test:
     runs-on: ubuntu-latest
     steps:
       - name: Pull the repository
         uses: actions/checkout@v2
-      - name: Build containers using docker-compose
-        run: docker-compose up -d
-      - name: Test the docker web container
-        run: docker run --network container:web_frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:80/
+      - name: Build web container
+        run: docker buid -t internet-privacy .
+        run: docker network create 397net
+      - name: Print out a status report
+        run: docker ps
+      - name: Start up the web container
+        run: docker run --rm --name priv-website --net 397net -d -p 80:80 internet-privacy
+      - name: Test web navigation to docker web container
+        run: curl -s --retry 3 --retry-connrefused http://localhost:80/

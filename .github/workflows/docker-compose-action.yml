@@ -4,7 +4,7 @@ jobs:
   Test-Build-Docker-Compose:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Testing docker-compose build..."
+      - name: Pulling repository
         uses: actions/checkout@v2
       - name: Builds using docker-compose
       - run: docker-compose up

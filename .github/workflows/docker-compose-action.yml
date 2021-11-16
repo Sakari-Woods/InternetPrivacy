@@ -6,6 +6,5 @@ jobs:
     steps:
       - name: Pull the repository
         uses: actions/checkout@v2
-        run: echo "cloned repository ${{ github.repository }}"
       - name: Build containers using docker-compose
         run: docker-compose up

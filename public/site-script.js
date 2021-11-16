@@ -59,7 +59,7 @@ function initMap() {
 
 }
 //below this comment is the JQuery to handle API requests
-$(document).ready(function() {
+$(window).on("load",function() {
     var wData = {
       cityName: "",
       lat: null,
@@ -85,16 +85,33 @@ $(document).ready(function() {
         method: "GET"
         }).then(function(response) { 
 			console.log(response);
-			var time = moment().format('llll');
-			$("#currCity").text(response.name+ "  ");
-			$("#currCity").append(time);
-			wData.lat = lat;
-			wData.long = long;
-			$("#icon").empty(iconSelector(response.weather[0].icon));       
-			$("#icon").append(iconSelector(response.weather[0].icon));       
-			$("#cWind").text("wind Speed: " + response.wind.speed +" mph");
-			$("#cTemp").text("Temperature: " + ((response.main.temp -273.15)/5*9 + 32).toFixed(1) +" F");
-			$("#cHum").text("Humidity: " + response.main.humidity +"%");
+			// var time = moment().format('llll');
+			// $("#currCity").text(response.name+ "  ");
+			// $("#currCity").append(time);
+			// wData.lat = lat;
+			// wData.long = long;
+			$("#icon").empty(iconSelector(response.current.weather[0].icon));       
+			$("#icon").append(iconSelector(response.current.weather[0].icon));
+			console.log(response.current.weather[0].icon);    
+			if (response.current.weather[0].main === "Rain"){
+				$("#sell").text("Buy an umbrella to stay dry.")
+			} 	else if (response.current.weather[0].main === "Clouds"){
+				$("#sell").text("Buy a hoody to stay warm.")
+			} 	else if (response.current.weather[0].main === "Mist"){
+				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this.")
+			}	else if (response.current.weather[0].main === "Clear"){
+				$("#sell").text("A nice pair of shades would compliment this weather.")
+			}	else if (response.current.weather[0].main === "Thunderstorm"){
+				$("#sell").text("Buy these electric proof golf clubs and golf in any weather.")
+			}	else if (response.current.weather[0].main === "Drizzle"){
+				$("#sell").text("A raincoat would be perfect today, and we have them all styles.")
+			}	else if (response.current.weather[0].main === "Snow"){
+				$("#sell").text("Tire chains are just what you need right now, get them at 150% normal price.")
+			}
+			// $("#Wind").text("wind Speed: " + response.current.wind_speed +" mph");
+			// console.log("wind Speed: " + response.current.wind_speed +" mph");
+			// $("#Temp").text("Temperature: " + ((response.current.temp -273.15)/5*9 + 32).toFixed(1) +" F");
+			// $("#Hum").text("Humidity: " + response.current.humidity +"%");
 		});
     
     }
@@ -114,8 +131,20 @@ $(document).ready(function() {
 			method: "GET"
         }).then(function(responds) {
 			console.log(responds);
+			$("#fmedian").text(responds.results[0].fields.acs.demographics.Sex.Female.percentage * 100 + "% of population female");
+			$("#mmedian").text(responds.results[0].fields.acs.demographics.Sex.Male.percentage * 100  + "% of population male");
+			$("#amedian").text(responds.results[0].fields.acs.demographics['Median age'].Total.value + " years is the average age");
+			$("#economics").text(responds.results[0].fields.acs.economics['Median household income'].Total.value + " dollars annually is the average household income")
+			$("#latino").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Hispanic or Latino'].percentage * 100).toFixed(1) + "% chance you identify as Hispanic or Latino");
+			$("#white").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: White alone'].percentage * 100).toFixed(1) + "% chance you identify as Caucasian");
+			$("#black").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Black or African American alone'].percentage * 100).toFixed(1) + "% chance you identify as Black or African American");
+			$("#asian").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Asian alone'].percentage * 100).toFixed(1) + "% chance you identify as Asian");
+			$("#female").text("As a woman you are ")
+			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Divorced'].percentage * 100) + "% likely to be divorced, ")
+			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Now married'].percentage * 100) + "% likely to be married, ")
+			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Never married'].percentage * 100) + "% likely to have not been married and ")
+			$("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Widowed'].percentage * 100) + "% likely to be widowed")
 		})
 	}
 
 })
-

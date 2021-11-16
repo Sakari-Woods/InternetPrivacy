@@ -34,7 +34,8 @@ html, body {
   margin-bottom:50px;
 }
 .rightsection{
-  height:300px;
+  height:400px;
+  width: 70%;
   float: right;
   padding: 20px;
   margin-bottom:50px;

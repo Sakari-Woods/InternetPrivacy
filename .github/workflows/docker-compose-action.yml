@@ -4,7 +4,8 @@ jobs:
   Test-Build-Docker-Compose:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "Testing docker-compose build..."
         uses: actions/checkout@v2
       - name: Builds using docker-compose
-        run: docker-compose up
+      - run: docker-compose up
       - run: echo "Docker-compose: ${{ job.status }}."

@@ -69,3 +69,11 @@ html, body {
   margin: 20px;
   margin-left:0px;
 }
+.link{
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}

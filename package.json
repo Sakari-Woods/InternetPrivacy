@@ -9,7 +9,7 @@
     "express": "^4.17.1",
     "forever": "^4.0.1",
     "node-fetch": "^3.0.0",
-    "nodemon": "^2.0.14",
+    "nodemon": "^2.0.15",
     "npm": "^8.1.2"
   },
   "devDependencies": {},

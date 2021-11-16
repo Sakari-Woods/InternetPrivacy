@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   web:
+    container_name: web_frontend
     depends_on:
       - db
     build: .
@@ -19,6 +20,7 @@ services:
     stdin_open: true
     tty: true
   db:
+    container_name: database
     image: "mysql:latest"
     restart: unless-stopped
     env_file: ./.env

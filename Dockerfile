@@ -12,6 +12,9 @@ COPY package.json /app
 # Install the image's dependencies
 RUN npm install
 
+# Install nodemon
+RUN npm install nodemon
+
 # Copy the project's source files over to the app directory
 COPY . /app
 

@@ -12,11 +12,11 @@
     "nodemon": "^2.0.15",
     "npm": "^8.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+   },
   "scripts": {
-    "start": "nodemon server.js",
-    "online": "forever start server.js",
-    "offline": "forever stop server.js"
+    "start": "nodemon server.js"
   },
   "author": "Sakari Woods",
   "license": "ISC"

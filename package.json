@@ -12,11 +12,9 @@
     "nodemon": "^2.0.15",
     "npm": "^8.1.2"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-   },
+  "devDependencies": {},
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Sakari Woods",
   "license": "ISC"

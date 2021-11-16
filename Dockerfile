@@ -12,6 +12,9 @@ COPY package.json /app
 # Install the image's dependencies
 RUN npm install
 
+# Install express module
+RUN npm install express
+
 # Copy the project's source files over to the app directory
 COPY . /app
 

@@ -14,7 +14,7 @@ html, body {
 .frame{
   display: block;
   width: auto;
-  height: 750px;
+  height: 850px;
   padding:50px;
   padding-left:20%;
   padding-right:20%;
@@ -69,4 +69,11 @@ html, body {
   padding: 40px;
   margin: 20px;
   margin-left:0px;
+}
+.demo {
+  height: 500px !important;
+}
+#chartContainer2 {
+  position: relative;
+  float: right;
 }

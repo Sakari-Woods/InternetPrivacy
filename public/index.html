@@ -4,7 +4,13 @@
 		<link rel="stylesheet" href="/styles.css">
 		
 		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="/site-script.js"></script>
+		<!-- <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>  -->
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script> 
+<script type="text/javascript"> 
+window.onload = function() { $("#chartContainer").CanvasJSChart({})} 
+</script>
 	</head>
 	<body>
 		<div id="map"></div>
@@ -16,7 +22,7 @@
 			<span id="icon"></span>
 			<p id="sell"></p>
 		  </div>
-		  <div class="rightsection sideright box">
+		  <div class="rightsection sideright box demo">
 			<p>Demographic information can be used in several ways the obvious is to make assumptions about you, but also to build a database based what everyone in an area does and then compare that to the demographic to make assumptions and categorize groups based on collected data.</p>
 				<p id = "fmedian"></p>
 				<p id = "mmedian"></p>
@@ -26,9 +32,12 @@
 				<p id = "white"></p>
 				<p id = "black"></p>
 				<p id = "asian"></p>
-				<p id = "female"></p>
+				<!-- <p id = "female"></p> -->
+				<div id="chartContainer" style="width: 50%; height: 200px margin-top"></div> 
+				<div id="chartContainer2" style="width: 50%; height: 200px margin-top"></div> 
 			</div>
 		</div>
+		
 
 		<div class="frame">
 		  <div class="rightsection sideright box">
@@ -62,7 +71,7 @@
 		<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
 		<script src="https://unpkg.com/scrollreveal"></script>
 		<script src="/reveal.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	</body>
 </html>

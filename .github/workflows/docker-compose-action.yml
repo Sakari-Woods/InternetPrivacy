@@ -5,6 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Pulling repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Builds using docker-compose
       - run: docker-compose up

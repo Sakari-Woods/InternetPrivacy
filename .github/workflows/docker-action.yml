@@ -17,7 +17,7 @@ jobs:
       - name: Start up the web container
         run: docker run --rm --name priv-website --net 397net -d -p 80:80 internet-privacy
       - name: Display if web container is running
-        run: docker logs internet_privacy
+        run: docker logs internet-privacy
       - name: Perform a web test
         uses: wei/curl@v1
         with:

@@ -7,9 +7,13 @@ jobs:
       - name: Pull the repository
         uses: actions/checkout@v2
       - name: Build web container
-        run: docker build -t internet-privacy . & docker network create 397net
-      - name: Print out a status report
-        run: docker ps
+        run: docker build -t internet-privacy .
+      - name: Display the docker containers
+        run: docker ps -a
+      - name: Build docker network
+        run: docker network create 397net
+      - name: Display the docker networks
+        run: docker network ls
       - name: Start up the web container
         run: docker run --rm --name priv-website --net 397net -d -p 80:80 internet-privacy
       - name: Test web navigation to docker web container

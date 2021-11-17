@@ -1,7 +1,7 @@
 name: Docker Test
 on: [push]
 jobs:
-  Docker-Test:
+  Docker-Build:
     runs-on: ubuntu-latest
     steps:
       - name: Pull the repository
@@ -16,5 +16,7 @@ jobs:
         run: docker network ls
       - name: Start up the web container
         run: docker run --rm --name priv-website --net 397net -d -p 80:80 internet-privacy
-      - name: Test web navigation to docker web container
-        run: curl -s --retry 3 --retry-connrefused http://localhost:80/
+      - name: Perform web test
+        uses: wei/curl@v1
+        with:
+          args: http://localhost:80

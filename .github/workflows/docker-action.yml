@@ -19,6 +19,6 @@ jobs:
       - name: Check that containers are succesfully running
         run: docker ps -a
       - name: Building test container
-        run: docker build -t internet-privacy-test -f Dockerfiles.test .
+        run: docker build -t internet-privacy-test -f Dockerfile.test .
       - name: Testing test container
         run: docker run --rm internet-privacy-test

@@ -1,0 +1,24 @@
+name: Docker Test
+on: [push]
+jobs:
+  Docker-Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull the repository
+        uses: actions/checkout@v2
+      - name: Build web container
+        run: docker build -t web_frontend .
+      - name: Display the docker images
+        run: docker images -a
+      - name: Build docker network
+        run: docker network create 397net
+      - name: Display the docker networks
+        run: docker network ls
+      - name: Start up the web container
+        run: docker run --rm --name priv-website --net 397net -d -p 80:80 web_frontend
+      - name: Check that containers are succesfully running
+        run: docker ps -a
+      - name: Building test container
+        run: docker build -t web_frontend_test -f Dockerfile.test .
+      - name: Testing the test container
+        run: echo "Docker run command will go here"

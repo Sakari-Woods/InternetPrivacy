@@ -1,0 +1,9 @@
+FROM web_frontend
+
+COPY tests tests
+
+ENV NODE_ENV dev
+
+RUN npm install -g mocha
+
+CMD ["mocha", "tests/test.js", "--reporter", "spec"] 

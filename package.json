@@ -8,15 +8,15 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "forever": "^4.0.1",
+    "mocha": "^9.1.3",
     "node-fetch": "^3.0.0",
     "nodemon": "^2.0.15",
-    "npm": "^8.1.2"
+    "npm": "^8.1.2",
+    "supertest": "^6.1.6"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon server.js",
-    "online": "forever start server.js",
-    "offline": "forever stop server.js"
+    "start": "node server.js"
   },
   "author": "Sakari Woods",
   "license": "ISC"

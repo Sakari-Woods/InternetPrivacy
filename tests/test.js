@@ -15,3 +15,4 @@ describe('Connect to the website', function(){
 				return done();
 			})
 	});
+});

@@ -8,15 +8,17 @@ jobs:
         uses: actions/checkout@v2
       - name: Build web container
         run: docker build -t internet-privacy .
-      - name: Display the docker containers
-        run: docker ps -a
+      - name: Display the docker images
+        run: docker images -a
       - name: Build docker network
         run: docker network create 397net
       - name: Display the docker networks
         run: docker network ls
       - name: Start up the web container
-        run: docker run --rm --name priv-website --net 397net -d -p 80:8000 internet-privacy
-      - name: Perform web test
+        run: docker run --rm --name priv-website --net 397net -p 80:80 internet-privacy
+      - name: Display the docker containers
+        run: docker ps -a
+      - name: Perform a web test
         uses: wei/curl@v1
         with:
-          args: http://localhost:8000
+          args: http://localhost:80

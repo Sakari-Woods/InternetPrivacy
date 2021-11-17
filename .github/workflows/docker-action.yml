@@ -16,7 +16,5 @@ jobs:
         run: docker network ls
       - name: Start up the web container
         run: docker run --rm --name priv-website --net 397net -d -p 80:80 internet-privacy
-      - name: Perform a web test
-        uses: wei/curl@v1
-        with:
-          args: http://0.0.0.0:80
+      - name: Check that containers are succesfully running
+        run: docker ps -a

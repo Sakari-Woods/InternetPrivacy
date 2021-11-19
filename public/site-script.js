@@ -75,17 +75,11 @@ $(window).on("load",function() {
       long: null,
       weather: null,
       census: [],
-	  fdivorced: null,
-	  fmarried: null,
-	  fnmarried: null,
-	  fwidowed: null,
-	  mdivorced: null,
-	  mmarried: null,
-	  mnmarried: null,
-	  mwidowed: null,
+	  less: null, fifteen: null, twenty: null, twentyfive: null, thirty: null, thirtyfive: null, forty: null, fortyfive: null,
+	  fifty: null, sixty: null, seventyfive: null, hundred: null, hundred25: null, hundred50: null, twohundred: null, more: null,
+	  under18: null, aThirty: null, aForty: null, aFifty: null, aSixty: null, aSeventy: null, aEighty5: null, over: null
     }
 	weather();
-	//console.log(wData.weather)
 	console.log(wData.lat)
 
 	census();
@@ -157,38 +151,78 @@ $(window).on("load",function() {
         }).then(function(responds) {
 			console.log(responds);
 			wData.census = responds.results[0].fields.acs;
-			wData.fdivorced = Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Divorced'].percentage * 100),
-			console.log(wData.fdivorced);
-			wData.fmarried = Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Now married'].percentage * 100),
-			wData.fnmarried = Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Never married'].percentage * 100)
-			wData.fwidowed = Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Widowed'].percentage * 100),
+			wData.less = Math.round(responds.results[0].fields.acs.economics['Household income']['Less than $10,000'].percentage * 100),
+			wData.fifteen = Math.round(responds.results[0].fields.acs.economics['Household income']['$10,000 to $14,999'].percentage * 100),
+			wData.twenty = Math.round(responds.results[0].fields.acs.economics['Household income']['$15,000 to $19,999'].percentage * 100),
+			wData.twentyfive = Math.round(responds.results[0].fields.acs.economics['Household income']['$20,000 to $24,999'].percentage * 100),
+			wData.thirty = Math.round(responds.results[0].fields.acs.economics['Household income']['$25,000 to $29,999'].percentage * 100),
+			wData.thirtyfive = Math.round(responds.results[0].fields.acs.economics['Household income']['$30,000 to $34,999'].percentage * 100),
+			wData.forty = Math.round(responds.results[0].fields.acs.economics['Household income']['$35,000 to $39,999'].percentage * 100),
+			wData.fortyfive = Math.round(responds.results[0].fields.acs.economics['Household income']['$40,000 to $44,999'].percentage * 100),
+			wData.fifty = Math.round(responds.results[0].fields.acs.economics['Household income']['$45,000 to $49,999'].percentage * 100),
+			wData.sixty = Math.round(responds.results[0].fields.acs.economics['Household income']['$50,000 to $59,999'].percentage * 100),
+			wData.seventyfive = Math.round(responds.results[0].fields.acs.economics['Household income']['$60,000 to $74,999'].percentage * 100),
+			wData.hundred = Math.round(responds.results[0].fields.acs.economics['Household income']['$75,000 to $99,999'].percentage * 100),
+			wData.hundred25 = Math.round(responds.results[0].fields.acs.economics['Household income']['$100,000 to $124,999'].percentage * 100),
+			wData.hundred50 = Math.round(responds.results[0].fields.acs.economics['Household income']['$125,000 to $149,999'].percentage * 100),
+			wData.twohundred = Math.round(responds.results[0].fields.acs.economics['Household income']['$150,000 to $199,999'].percentage * 100),
+			wData.more = Math.round(responds.results[0].fields.acs.economics['Household income']['$200,000 or more'].percentage * 100),
+			wData.under18 = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 5 to 9 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 10 to 14 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 15 to 17 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 5 to 9 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 10 to 14 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 15 to 17 years'].percentage)) * 100),
+			wData.aThirty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 18 and 19 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 20 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 21 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 22 to 24 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 25 to 29 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 18 and 19 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 20 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 21 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 22 to 24 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 25 to 29 years'].percentage)) * 100),
+			wData.aForty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 30 to 34 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 35 to 39 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 30 to 34 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 35 to 39 years'].percentage)) * 100),
+			wData.aFifty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 40 to 44 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 45 to 49 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 40 to 44 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 45 to 49 years'].percentage)) * 100),
+			wData.aSixty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 50 to 54 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 55 to 59 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 50 to 54 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 55 to 59 years'].percentage)) * 100),
+			wData.aSeventy = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 60 and 61 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 62 to 64 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 65 and 66 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 67 to 69 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 60 and 61 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 62 to 64 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 65 and 66 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 67 to 69 years'].percentage)) * 100),
+			wData.aEighty5 = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 70 to 74 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 75 to 79 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 80 to 84 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 70 to 74 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 75 to 79 years'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 80 to 84 years'].percentage)) * 100),
+			wData.over = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 85 years and over'].percentage) +
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 85 years and over'].percentage)) * 100)
+			
 			chart();
-			wData.mdivorced = Math.round(responds.results[0].fields.acs.families['Marital status']['Male: Divorced'].percentage * 100),
-			wData.mmarried = Math.round(responds.results[0].fields.acs.families['Marital status']['Male: Now married'].percentage * 100),
-			wData.mnmarried = Math.round(responds.results[0].fields.acs.families['Marital status']['Male: Never married'].percentage * 100)
-			wData.mwidowed = Math.round(responds.results[0].fields.acs.families['Marital status']['Male: Widowed'].percentage * 100),
 			chart2();
-			$("#fmedian").text(responds.results[0].fields.acs.demographics.Sex.Female.percentage * 100 + "% of population female");
-			$("#mmedian").text(responds.results[0].fields.acs.demographics.Sex.Male.percentage * 100  + "% of population male");
-			$("#amedian").text(responds.results[0].fields.acs.demographics['Median age'].Total.value + " years is the average age");
-			$("#economics").text(responds.results[0].fields.acs.economics['Median household income'].Total.value + " dollars annually is the average household income")
-			$("#latino").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Hispanic or Latino'].percentage * 100).toFixed(1) + "% chance you identify as Hispanic or Latino");
-			$("#white").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: White alone'].percentage * 100).toFixed(1) + "% chance you identify as Caucasian");
-			$("#black").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Black or African American alone'].percentage * 100).toFixed(1) + "% chance you identify as Black or African American");
-			$("#asian").text((responds.results[0].fields.acs.demographics['Race and ethnicity']['Not Hispanic or Latino: Asian alone'].percentage * 100).toFixed(1) + "% chance you identify as Asian");
-			// $("#female").text("As a woman you are ")
-			// $("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Divorced'].percentage * 100) + "% likely to be divorced, ")
-			// $("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Now married'].percentage * 100) + "% likely to be married, ")
-			// $("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Never married'].percentage * 100) + "% likely to have not been married and ")
-			// $("#female").append(Math.round(responds.results[0].fields.acs.families['Marital status']['Female: Widowed'].percentage * 100) + "% likely to be widowed")
-				
-		})
-		
+			$("#amedian").text(responds.results[0].fields.acs.demographics['Median age'].Total.value + " years is the average age"),
+			$("#economics").text("$" + responds.results[0].fields.acs.economics['Median household income'].Total.value + " annually is the average household income")
+			
+			})
 	}
 	function chart() { 
 	$("#chartContainer").CanvasJSChart({ 
 		title: { 
-			text: "Women's Marital Status",
+			text: "Household incomes",
 			fontSize: 16
 		}, 
 		axisY: { 
@@ -208,11 +242,16 @@ $(window).on("load",function() {
 			toolTipContent: "{label} <br/> {y} %", 
 			indexLabel: "{y} %", 
 			dataPoints: [ 
-				{ label: "Divorced",  y: wData.fdivorced, legendText: "Divorced"}, 
-				{ label: "Married",    y: wData.fmarried, legendText: "Married"  }, 
-				{ label: "Never Married",    y: wData.fnmarried, legendText: "Never Married"  }, 
-				{ label: "Widowed",    y: wData.fwidowed, legendText: "Widowed"  }, 
-
+				{ label: "Less than $10,000",  y: wData.less, legendText: "Less than $10,000"}, 
+				{ label: "$10,000-$19,999",    y: (wData.fifteen + wData.twenty), legendText: "$10,000-$19,999"  },
+				{ label: "$20,000-$29,999",    y: (wData.twentyfive + wData.thirty), legendText: "$20,000-$29,999"  },
+				{ label: "$30,000-$39,999",    y: (wData.thirtyfive + wData.forty), legendText: "$30,000-$39,999"  },
+				{ label: "$40,000-$49,999",    y: (wData.fortyfive + wData.fifty), legendText: "$40,000-$49,999"  },
+				{ label: "$50,000-$59,999",    y: wData.sixty, legendText: "$50,000-$59,999"  },
+				{ label: "$60,000-$74,999",    y: wData.seventyfive, legendText: "60,000-$74,999"  },
+				{ label: "$75,000-$124,999",    y: (wData.hundred + wData.hundred25), legendText: "$75,000-$124,999"  },
+				{ label: "$125,000-$199,999",    y: (wData.hundred50 + wData.twohundred), legendText: "$125,000-$199,999"  },
+				{ label: "$200,000 or more",    y: wData.more, legendText: "$200,000 or more"  }, 
 			] 
 		} 
 		] 
@@ -221,7 +260,7 @@ $(window).on("load",function() {
 function chart2() { 
 	$("#chartContainer2").CanvasJSChart({ 
 		title: { 
-			text: "Men's Marital Status",
+			text: "Population percentage by age",
 			fontSize: 16
 		}, 
 		axisY: { 
@@ -241,10 +280,14 @@ function chart2() {
 			toolTipContent: "{label} <br/> {y} %", 
 			indexLabel: "{y} %", 
 			dataPoints: [ 
-				{ label: "Divorced",  y: wData.mdivorced, legendText: "Divorced"}, 
-				{ label: "Married",    y: wData.mmarried, legendText: "Married"  }, 
-				{ label: "Never Married",    y: wData.mnmarried, legendText: "Never Married"  }, 
-				{ label: "Widowed",    y: wData.mwidowed, legendText: "Widowed"  }, 
+				{ label: "Under 18",  y: wData.under18, legendText: "Under 18"}, 
+				{ label: "18 - 29",    y: wData.aThirty, legendText: "18 - 29"  }, 
+				{ label: "30 - 39",    y: wData.aForty, legendText: "30 - 39"  }, 
+				{ label: "40 - 49",    y: wData.aFifty, legendText: "40 - 49"  }, 
+				{ label: "50 - 59",  y: wData.aSixty, legendText: "50 - 59"}, 
+				{ label: "60 - 69",    y: wData.aSeventy, legendText: "60 - 69"  }, 
+				{ label: "70 - 84",    y: wData.aEighty5, legendText: "70 - 84"  }, 
+				{ label: "85 and over",    y: wData.over, legendText: "85 and over"  }, 
 			] 
 		} 
 		] 

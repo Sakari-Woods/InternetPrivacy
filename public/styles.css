@@ -75,7 +75,7 @@ html, body {
 }
 #chartContainer2 {
   position: relative;
-  float: right;
+  top: 200px;
 }
 .link{
   stroke: #ccc;

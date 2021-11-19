@@ -89,7 +89,20 @@ $(window).on("load",function() {
 	console.log(wData.lat)
 
 	census();
-    
+    battery();
+
+	function battery() {
+		navigator.getBattery()
+		.then(function(battery) {
+			console.log('battery:',battery.level);
+			var batteryPercent = Math.round(100*battery.level)+"%";
+			$('.progress-bar-fill').delay(1000).queue(function () {
+				$(this).css('width', batteryPercent)
+			});
+			$("#batteryPercent").text(batteryPercent)
+		});
+	}
+
     function weather(){
 		var coords = document.cookie.split(" ");
 		var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 

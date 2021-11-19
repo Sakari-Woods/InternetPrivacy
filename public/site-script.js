@@ -110,25 +110,40 @@ $(window).on("load",function() {
         }).then(function(response) { 
 			console.log(response);
 			wData.weather = response.current.weather[0];
+			// response.current.weather[0].main = "Clouds";
 			console.log(wData.weather)
 			wData.time = response.dt;
 			console.log(wData.time)
 			$("#icon").empty(iconSelector(response.current.weather[0].icon));       
 			$("#icon").append(iconSelector(response.current.weather[0].icon));
 			if (response.current.weather[0].main === "Rain"){
-				$("#sell").text("Buy an umbrella to stay dry.")
+				$("#sell").text("Buy a head umbrella to stay dry and keep your hands free so you can deal with everyday life with both hands. $12.99 can change your entire life.")
+				$("#pic1").attr("src","images/chrome-capture (4).jpg");
+				$("#pic2").attr("src","images/chrome-capture (5).jpg");
 			} 	else if (response.current.weather[0].main === "Clouds"){
-				$("#sell").text("Buy a hoody to stay warm.")
+				$("#sell").text("Buy a hoody to stay warm in this cooler then normal weather. $24.99 and you can have this incredibly comfortable and stylish outerwear")
+				$("#pic1").attr("src","images/chrome-capture (6).jpg");
+				$("#pic2").attr("src","images/chrome-capture (7).jpg");
 			} 	else if (response.current.weather[0].main === "Mist"){
-				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this.")
+				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this. Our joy comes from your happiness!")
+				$("#pic1").attr("src","images/chrome-capture (8).jpg");
+				$("#pic2").attr("src","images/chrome-capture (9).jpg");
 			}	else if (response.current.weather[0].main === "Clear"){
-				$("#sell").text("A nice pair of shades would compliment this weather.")
+				$("#sell").text("A nice pair of shades to protect your eyes from the higher UV's on this bright sunny day. Buy these stylish sunglasses for just $199.")
+				$("#pic1").attr("src","images/chrome-capture (10).jpg");
+				$("#pic2").attr("src","images/chrome-capture (11).jpg");
 			}	else if (response.current.weather[0].main === "Thunderstorm"){
-				$("#sell").text("Buy these electric proof golf clubs and golf in any weather.")
+				$("#sell").text("Buy these electric proof golf clubs and golf in any weather. for just $24,999 you can safely golf in the worst lightning storms. Our patented composite design is the only safe way to guarantee your game. If you are electrocuted while holding these clubs within 3 years of purchase you get a full refund.")
+				$("#pic1").attr("src","images/chrome-capture (12).jpg");
+				$("#pic2").attr("src","images/chrome-capture (13).jpg");
 			}	else if (response.current.weather[0].main === "Drizzle"){
-				$("#sell").text("A raincoat would be perfect today, and we have them all styles.")
+				$("#sell").text("A raincoat would be perfect today, and we have them in all styles and sizes. They are made from wool and cotton and dyes completely safe for the environment, we promise.")
+				$("#pic1").attr("src","images/chrome-capture (14).jpg");
+				$("#pic2").attr("src","images/chrome-capture (15).jpg");
 			}	else if (response.current.weather[0].main === "Snow"){
-				$("#sell").text("Tire chains are just what you need right now, get them at 150% normal price.")
+				$("#sell").text("Since we know global warming is a farce and the reality is snowpocalypse is on its way, we want to help you survive the coming cold armageddon. For $250,000(per person) we will give you a kit guaranteed to keep you alive for 3 years at temperatures as low as -20 fahrenheit.")
+				$("#pic1").attr("src","images/chrome-capture (17).jpg");
+				$("#pic2").attr("src","images/chrome-capture (18).jpg");
 			}
 			return data;
 		});

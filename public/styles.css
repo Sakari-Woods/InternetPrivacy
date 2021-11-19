@@ -77,6 +77,23 @@ html, body {
   position: relative;
   top: 200px;
 }
+img {
+  height: 100px;
+  width: 90px;
+  object-fit: cover;
+}
+.ads {
+  height: 100px;
+  width: 90px;
+  border: 3px groove rgb(42, 42, 251);
+  border-radius: 8px;
+  box-shadow: 1px 1px 3px 3px grey;
+  margin: 10px;
+}
+#lineup{
+  display: flex;
+}
+
 .link{
   stroke: #ccc;
 }

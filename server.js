@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const mysql = require('mysql');
 const fs = require('fs');
 var app = express();
 const PORT = process.env.NODE_DOCKER_PORT || 80;
@@ -104,6 +105,8 @@ app.get('/sitecontent', (req, res) => {
 	res.sendFile('/public/content.json', {root: __dirname});
 });
 
+//let connection = require("./dbconfig");
+
 /*  Start the server. Because port 80 is reserved, sudo is required to start the server.
 	User must also ensure that networking is properly port-forwarding port 80 to the server's ip address.
 	(Note: Upgrading to https will require switching the port to 443, but will also force the user to receive
@@ -112,3 +115,29 @@ app.get('/sitecontent', (req, res) => {
 var server = app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);
 });
+
+const connection = mysql.createConnection({
+	host: process.env.MYSQLDB_DATABASE,
+    user: process.env.MYSQLDB_USER,
+    password: process.env.MYSQLDB_ROOT_PASSWORD,
+    database: process.env.MYSQLDB_DATABASE,
+	port: 3306
+});
+
+connection.connect(function(err) {
+	if (err) {
+	  console.error('error connecting: ' + err.stack);
+	  return;
+	}
+	console.log('Connected to <' + process.env.DB_NAME + '> as id ' + connection.threadId);
+	var createPrivTable = "CREATE TABLE IF NOT EXISTS privacy (key_id varchar(255), lat decimal(6,4), lon decimal(8,4))";
+	connection.query(createPrivTable, function(err, results, fields) {
+		if (err) {
+			console.log(err);
+		  	console.log(results);
+		}
+		console.log(results);
+	});
+});
+
+

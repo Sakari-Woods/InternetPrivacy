@@ -137,6 +137,7 @@ connection.connect(function(err) {
 		  	console.log(results);
 		}
 		console.log(results);
+		console.log("yo");
 	});
 });
 

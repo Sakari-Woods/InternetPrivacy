@@ -187,7 +187,7 @@ $(window).on("load",function() {
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 15 to 17 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 5 to 9 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 10 to 14 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 15 to 17 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 15 to 17 years'].percentage)) * 50),
 			wData.aThirty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 18 and 19 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 20 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 21 years'].percentage) +
@@ -197,19 +197,19 @@ $(window).on("load",function() {
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 20 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 21 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 22 to 24 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 25 to 29 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 25 to 29 years'].percentage)) * 50),
 			wData.aForty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 30 to 34 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 35 to 39 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 30 to 34 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 35 to 39 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 35 to 39 years'].percentage)) * 50),
 			wData.aFifty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 40 to 44 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 45 to 49 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 40 to 44 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 45 to 49 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 45 to 49 years'].percentage)) * 50),
 			wData.aSixty = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 50 to 54 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 55 to 59 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 50 to 54 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 55 to 59 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 55 to 59 years'].percentage)) * 50),
 			wData.aSeventy = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 60 and 61 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 62 to 64 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 65 and 66 years'].percentage) +
@@ -217,15 +217,15 @@ $(window).on("load",function() {
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 60 and 61 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 62 to 64 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 65 and 66 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 67 to 69 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 67 to 69 years'].percentage)) * 50),
 			wData.aEighty5 = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 70 to 74 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 75 to 79 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Female: 80 to 84 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 70 to 74 years'].percentage) +
 										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 75 to 79 years'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 80 to 84 years'].percentage)) * 100),
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 80 to 84 years'].percentage)) * 50),
 			wData.over = Math.round(((responds.results[0].fields.acs.demographics['Population by age range']['Female: 85 years and over'].percentage) +
-										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 85 years and over'].percentage)) * 100)
+										(responds.results[0].fields.acs.demographics['Population by age range']['Male: 85 years and over'].percentage)) * 50)
 			
 			chart();
 			chart2();

@@ -70,7 +70,7 @@ function initMap() {
 //below this comment is the JQuery to handle API requests
 $(window).on("load",function() {
     var wData = {
-      time: null,
+	  key: "",
       lat: null,
       long: null,
       weather: null,
@@ -112,8 +112,6 @@ $(window).on("load",function() {
 			wData.weather = response.current.weather[0];
 			// response.current.weather[0].main = "Clouds";
 			console.log(wData.weather)
-			wData.time = response.dt;
-			console.log(wData.time)
 			$("#icon").empty(iconSelector(response.current.weather[0].icon));       
 			$("#icon").append(iconSelector(response.current.weather[0].icon));
 			if (response.current.weather[0].main === "Rain"){
@@ -308,6 +306,32 @@ function chart2() {
 		] 
 	}); 
 }
+function sleep(milliseconds) {
+	const date = Date.now();
+	let currentDate = null;
+	do {
+	  currentDate = Date.now();
+	} while (currentDate - date < milliseconds);
+  }
+  sleep(100);
+  keyBuild();
+  function keyBuild(){
+	  for (i = 4; i < document.cookie.length - 28; i++){
+		  wData.key += document.cookie[i];
+	  }
+	  console.log(wData.key);
+  }
+  if (wData.key != 0){
+	  $.post("/data",
+	  {
+		 key: wData.key,
+		 lat: wData.lat,
+		 long: wData.long
+	  },
+	  function (data, status) {
+		 console.log(data);
+	  });
+	}
 })
 
  // Hold the starting and ending times of the scans.
@@ -412,4 +436,7 @@ var force = d3.layout.force()
 
     node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
   });
+  
+
+
 }

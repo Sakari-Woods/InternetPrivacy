@@ -14,16 +14,26 @@ const http = require('http');
 const https = require('https');
 const mysql = require('mysql');
 const fs = require('fs');
+var bodyParser = require('body-parser');
 var app = express();
 const PORT = process.env.NODE_DOCKER_PORT || 80;
-
+let personnelData = {
+	  key: "",
+      lat: null,
+      long: null,
+}
 
 // Grab the API key for ipstack.com in order to get latitude and longitude data from the user.
 var accessKey = process.env.IPSTACK_API;
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+extended: true
+}));
+app.use(express.urlencoded({ extended: true }));
 const pageContentFile = fs.readFileSync("./public/content.json");
 
 // Random Key Generator.
@@ -112,10 +122,6 @@ app.get('/sitecontent', (req, res) => {
 	(Note: Upgrading to https will require switching the port to 443, but will also force the user to receive
 	a popup screen stating that self-signed certificates are unsafe. To avoid this, http has been preferred.
 */
-var server = app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}.`);
-});
-
 const connection = mysql.createConnection({
 	host: process.env.MYSQLDB_DATABASE,
     user: process.env.MYSQLDB_USER,
@@ -123,6 +129,30 @@ const connection = mysql.createConnection({
     database: process.env.MYSQLDB_DATABASE,
 	port: 3306
 });
+app.post("/data", (req, resp) => {
+	resp.json([{
+		long: req.body.long,
+		key: req.body.key,
+		lat: req.body.lat
+	}])
+	personnelData.key = req.body.key;
+	personnelData.long = req.body.long;
+	personnelData.lat = req.body.lat;
+	console.log(personnelData);
+ })
+
+var server = app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}.`);
+});
+function sleep(milliseconds) {
+	const date = Date.now();
+	let currentDate = null;
+	do {
+	  currentDate = Date.now();
+	} while (currentDate - date < milliseconds);
+  }
+ 
+
 
 connection.connect(function(err) {
 	if (err) {
@@ -132,13 +162,38 @@ connection.connect(function(err) {
 	console.log('Connected to <' + process.env.DB_NAME + '> as id ' + connection.threadId);
 	var createPrivTable = "CREATE TABLE IF NOT EXISTS privacy (key_id varchar(255), lat decimal(6,4), lon decimal(8,4))";
 	connection.query(createPrivTable, function(err, results, fields) {
-		if (err) {
-			console.log(err);
+		if (err) { 
+			console.log("Create table fail");
 		  	console.log(results);
 		}
 		console.log(results);
 		console.log("yo");
 	});
+	var keyVerify = "SHOW INDEX FROM privacy WHERE key_id = 'keys';";
+	connection.query(keyVerify, function() {
+		if (!keyVerify) {
+			console.log("New key insert");
+			var insertPrivTable = "INSERT INTO privacy (key_id, lat, lon) VALUES (" + personnelData.key + ", " + personnelData.lat + ", " + personnelData.long + ");";
+			connection.query(insertPrivTable, function(err, results, fields) {
+				if (err) {
+					console.log("Insert fail");
+					console.log(results);
+				}
+				console.log(results);
+				console.log("Key Exists");
+			});
+		}
+		
+	});
+	var selPrivTable = "SELECT * FROM privacy WHERE key_id = 'key';";
+	var slat = connection.query(selPrivTable, function(err, results, fields) {
+		if (slat) {
+			console.log("Can not select from privacy");
+		  	console.log(fields);
+		}
+		console.log(results);
+	});
+
 });
 
 

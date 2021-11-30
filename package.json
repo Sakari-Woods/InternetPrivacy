@@ -15,9 +15,10 @@
     "node-fetch": "^3.0.0",
     "nodemon": "^2.0.15",
     "npm": "^8.1.2",
-    "supertest": "^6.1.6"
+    "socket.io": "^4.4.0",
+    "supertest": "^6.1.6",
+    "ws": "^8.3.0"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node server.js"
   },

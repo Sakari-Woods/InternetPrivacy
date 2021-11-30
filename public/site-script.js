@@ -26,7 +26,7 @@ request.onload = function(){
 	zoomSys = setInterval(zoomFunc, 200);
 
 	// Scan local network map.
-	scanLocalNetwork();
+	//scanLocalNetwork();
 
 	// Populate network card with found connections after 3 seconds.
 	setTimeout(function(){

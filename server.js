@@ -10,12 +10,13 @@ var express = require('express');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const http = require('http');
-const https = require('https');
+'use strict';
 const mysql = require('mysql');
 const fs = require('fs');
+var WebSocketServer = require('ws').Server;
+var http = require('http').createServer();
 var bodyParser = require('body-parser');
-var app = express();
+const app = express();
 const PORT = process.env.NODE_DOCKER_PORT || 80;
 let personnelData = {
 	  key: "",
@@ -33,8 +34,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 extended: true
 }));
+
 app.use(express.urlencoded({ extended: true }));
 const pageContentFile = fs.readFileSync("./public/content.json");
+
+// Start the application server.
+app.listen(PORT, () => {
+	console.log("Application server is running");
+});
+
 
 // Random Key Generator.
 function randomKey(){
@@ -141,9 +149,6 @@ app.post("/data", (req, resp) => {
 	console.log(personnelData);
  })
 
-var server = app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}.`);
-});
 function sleep(milliseconds) {
 	const date = Date.now();
 	let currentDate = null;
@@ -183,7 +188,6 @@ connection.connect(function(err) {
 				console.log("Key Exists");
 			});
 		}
-		
 	});
 	var selPrivTable = "SELECT * FROM privacy WHERE key_id = 'key';";
 	var slat = connection.query(selPrivTable, function(err, results, fields) {
@@ -197,3 +201,19 @@ connection.connect(function(err) {
 });
 
 
+// Start the Web-Socket server.
+var ws = new WebSocketServer({server:http});
+
+ws.on('connection', function (ws, req) {
+	console.log("Connection: "+req.connection.remoteAddress);
+
+	ws.on('message', function (data) {
+		console.log("Received: *"+data+"*");
+		ws.send("message:I received your message!");
+	});
+});
+
+
+http.listen(8005, function () {
+	console.log("Websocket server is running");
+});

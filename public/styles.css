@@ -119,3 +119,60 @@ img {
   /*transition: width 250ms ease-in-out;*/
   transition: width 5s ease-in-out;
 }
+
+.CTA{
+  display: block;
+}
+
+.center{
+  text-align: center;
+  width:fit-content;
+}
+
+.rotate {
+  animation: rotation 2s;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.linear {
+  animation-timing-function: linear;
+}
+
+.infinite {
+  animation-iteration-count: infinite;
+}
+
+.fade {
+  -webkit-animation-duration: 3s; animation-duration: 3s;
+  -webkit-animation-fill-mode: both; animation-fill-mode: both;
+  -webkit-animation-direction: alternate; animation-direction: alternate;
+}
+
+@-webkit-keyframes fadeOut {
+  0% {opacity: .75;}
+  100% {opacity: 0;}
+}
+
+@keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.fadeOut {
+  -webkit-animation-name: fadeOut;
+  animation-name: fadeOut;
+}
+
+.plugin:hover{
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}

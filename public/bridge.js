@@ -1,5 +1,5 @@
 console.log("Bridge loaded.");
-var ws = new WebSocket("ws://sakaribox.ddns.net:8005");
+var ws = new WebSocket("ws://localhost:8005");
 
 ws.onopen = function(event) {
 	console.log("Socket connection has been opened.");

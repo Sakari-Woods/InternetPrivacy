@@ -1,7 +1,7 @@
 // Request/generate the key for the user.
 if(document.cookie.length < 1){
 	console.log("Requesting new key");
-	let keyrequest = new XMLHttpRequest();
+	let keyrequest = new XMLHttpRequest("8005");
 	keyrequest.open('GET', '/key');
 	keyrequest.responseType = 'json';
 	keyrequest.send();
@@ -313,14 +313,14 @@ function sleep(milliseconds) {
 	  currentDate = Date.now();
 	} while (currentDate - date < milliseconds);
   }
-  sleep(100);
-  keyBuild();
-  function keyBuild(){
-	  for (i = 4; i < document.cookie.length - 28; i++){
-		  wData.key += document.cookie[i];
-	  }
-	  console.log(wData.key);
-  }
+//sleep(100);
+//   keyBuild();
+//   function keyBuild(){
+// 	  for (i = 4; i < document.cookie.length - 28; i++){
+// 		  wData.key += document.cookie[i];
+// 	  }
+// 	  console.log(wData.key);
+//   }
   if (wData.key != 0){
 	  $.post("/data",
 	  {

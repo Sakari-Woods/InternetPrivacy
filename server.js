@@ -14,7 +14,8 @@ const path = require('path');
 const mysql = require('mysql');
 const fs = require('fs');
 var WebSocketServer = require('ws').Server;
-var http = require('http').createServer();
+var http = require('http')
+var httpSocket= (http).createServer();
 var bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.NODE_DOCKER_PORT || 80;
@@ -23,7 +24,39 @@ let personnelData = {
       lat: null,
       long: null,
 }
+const connection = mysql.createConnection({
+	host: process.env.MYSQLDB_DATABASE,
+    user: process.env.MYSQLDB_USER,
+    password: process.env.MYSQLDB_ROOT_PASSWORD,
+    database: process.env.MYSQLDB_DATABASE,
+	port: 3306
+});
+connection.connect(function(err) {
+	if (err) {
+	  console.error('error connecting: ' + err.stack);
+	  return;
+	}
+	console.log('Connected to <' + process.env.DB_NAME + '> as id ' + connection.threadId);
+	var createPrivTable = "CREATE TABLE IF NOT EXISTS privacy (key_id varchar(500), lat decimal(6,4), lon decimal(7,4))";
+	connection.query(createPrivTable, function(err, results, fields) {
+		if (err) { 
+			console.log("Create table fail");
+		}
+		console.log(results);
+		console.log("yo");
+	});
 
+	var selPrivTable = "SELECT * FROM privacy";
+	connection.query(selPrivTable, function(err, results, fields) {
+		if (err) {
+			console.log("Can not select from privacy");
+		  	console.log(fields);
+		}
+		console.log(results);
+		console.log("lat = %d\n", results[0].lat);
+	});
+
+});
 // Grab the API key for ipstack.com in order to get latitude and longitude data from the user.
 var accessKey = process.env.IPSTACK_API;
 
@@ -46,9 +79,9 @@ app.listen(PORT, () => {
 
 // Random Key Generator.
 function randomKey(){
-	let keyCode = "";
-	for (let i = 0; i < 256; i++){
-		keyCode += String.fromCharCode(Math.floor(Math.random() * 127));
+	let keyCode = '';
+	for (let i = 0; i < 64; i++){
+		keyCode += String.fromCharCode(97 + Math.floor(Math.random() * 26));
 	}
 	return keyCode;
 }
@@ -64,6 +97,7 @@ app.get('/', (req, res) => {
 	if a user has visited the site before.
 */
 app.get('/key', (req, res) => {
+	console.log("getting new key")
 	var cookie = req.cookies.key;
 	if(cookie === undefined){
 		// No key present, so query the ip and grab the latitude and longitude used for the map. 
@@ -95,8 +129,22 @@ app.get('/key', (req, res) => {
 				res.cookie('lat',data.lat);
 				res.cookie('lon',data.lon);
 			});
+			
 			resp.on('end', () => {
 				console.log("Key saved");
+				console.log("New key insert");
+				console.log(key);
+				connection.query("INSERT INTO privacy SET ?",
+				{
+					key_id: key,
+					lat: data.lat,
+					lon: data.lon
+				},
+				function(err, res) {
+					if (err) throw err;
+						console.log("Insert fail");
+						console.log(res);
+					});
 				console.log(data);
 				res.send('Success');
 			});
@@ -130,79 +178,21 @@ app.get('/sitecontent', (req, res) => {
 	(Note: Upgrading to https will require switching the port to 443, but will also force the user to receive
 	a popup screen stating that self-signed certificates are unsafe. To avoid this, http has been preferred.
 */
-const connection = mysql.createConnection({
-	host: process.env.MYSQLDB_DATABASE,
-    user: process.env.MYSQLDB_USER,
-    password: process.env.MYSQLDB_ROOT_PASSWORD,
-    database: process.env.MYSQLDB_DATABASE,
-	port: 3306
-});
+
 app.post("/data", (req, resp) => {
 	resp.json([{
 		long: req.body.long,
 		key: req.body.key,
 		lat: req.body.lat
 	}])
-	personnelData.key = req.body.key;
+	personnelData.key = '' + req.body.key;
 	personnelData.long = req.body.long;
 	personnelData.lat = req.body.lat;
 	console.log(personnelData);
  })
 
-function sleep(milliseconds) {
-	const date = Date.now();
-	let currentDate = null;
-	do {
-	  currentDate = Date.now();
-	} while (currentDate - date < milliseconds);
-  }
- 
-
-
-connection.connect(function(err) {
-	if (err) {
-	  console.error('error connecting: ' + err.stack);
-	  return;
-	}
-	console.log('Connected to <' + process.env.DB_NAME + '> as id ' + connection.threadId);
-	var createPrivTable = "CREATE TABLE IF NOT EXISTS privacy (key_id varchar(255), lat decimal(6,4), lon decimal(8,4))";
-	connection.query(createPrivTable, function(err, results, fields) {
-		if (err) { 
-			console.log("Create table fail");
-		  	console.log(results);
-		}
-		console.log(results);
-		console.log("yo");
-	});
-	var keyVerify = "SHOW INDEX FROM privacy WHERE key_id = 'keys';";
-	connection.query(keyVerify, function() {
-		if (!keyVerify) {
-			console.log("New key insert");
-			var insertPrivTable = "INSERT INTO privacy (key_id, lat, lon) VALUES (" + personnelData.key + ", " + personnelData.lat + ", " + personnelData.long + ");";
-			connection.query(insertPrivTable, function(err, results, fields) {
-				if (err) {
-					console.log("Insert fail");
-					console.log(results);
-				}
-				console.log(results);
-				console.log("Key Exists");
-			});
-		}
-	});
-	var selPrivTable = "SELECT * FROM privacy WHERE key_id = 'key';";
-	var slat = connection.query(selPrivTable, function(err, results, fields) {
-		if (slat) {
-			console.log("Can not select from privacy");
-		  	console.log(fields);
-		}
-		console.log(results);
-	});
-
-});
-
-
 // Start the Web-Socket server.
-var ws = new WebSocketServer({server:http});
+var ws = new WebSocketServer({server:httpSocket});
 
 ws.on('connection', function (ws, req) {
 	console.log("Connection: "+req.connection.remoteAddress);
@@ -214,6 +204,6 @@ ws.on('connection', function (ws, req) {
 });
 
 
-http.listen(8005, function () {
+httpSocket.listen(8005, function () {
 	console.log("Websocket server is running");
 });

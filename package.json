@@ -22,6 +22,6 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "Sakari Woods",
+  "author": "Sakari Woods, Michael Rettus, Justin Hanson, Keili Rivera, Adam Bullard",
   "license": "ISC"
 }

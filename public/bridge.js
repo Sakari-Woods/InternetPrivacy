@@ -1,12 +1,21 @@
-console.log("Bridge loaded.");
 var ws = new WebSocket("ws://localhost:8005");
 
 ws.onopen = function(event) {
-	console.log("Socket connection has been opened.");
+	// Socket connection has been opened.
 };
 
 ws.onmessage = function(event) {
-	console.log("Received data from the server: "+event.data);
+	console.log("Received data from the server: *"+event.data+"*");
+	if(event.data.toString() == "message:update-request"){
+
+		// Send the collected data as an update.
+		var dataSend = {
+			"key": document.cookie.substring(document.cookie.indexOf("=")+1),
+			"data": "blah blah blah"
+		};
+
+		ws.send(JSON.stringify(dataSend));
+	}
 };
 
 ws.onclose = function(event) {
@@ -19,8 +28,6 @@ ws.onerror = function(error) {
 
 // Test functionality.
 function sendMsg(message){
-	console.log("client is sending message: *"+message+"*");
-
-	// Here We're adding "message:" as a flag to our data so we know what to do with it.
-	ws.send("message:"+message);
+	console.log("client is sending *"+message+"*");
+	ws.send(message);
 }

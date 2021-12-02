@@ -6,204 +6,98 @@
 		api.ipstack.com: Service used to obtain latitude, longtitude and city from a user.
 		google maps API: Renders a google maps view when taking in the above latitude and longitude as input.
 */
-var express = require('express');
+
+// Define our variables and required libraries.
 require('dotenv').config();
+var express = require('express');
+var WebSocketServer = require('ws').Server;
+var http = require('http')
+var httpSocket= (http).createServer();
+var bodyParser = require('body-parser');
+var accessKey = process.env.IPSTACK_API;
+var backend = require('./backend.js');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 'use strict';
 const mysql = require('mysql');
 const fs = require('fs');
-var WebSocketServer = require('ws').Server;
-var http = require('http')
-var httpSocket= (http).createServer();
-var bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.NODE_DOCKER_PORT || 80;
+
+// Create the data structure used to pass information back and forth to the user.
 let personnelData = {
 	  key: "",
       lat: null,
       long: null,
 }
-const connection = mysql.createConnection({
-	host: process.env.MYSQLDB_DATABASE,
-    user: process.env.MYSQLDB_USER,
-    password: process.env.MYSQLDB_ROOT_PASSWORD,
-    database: process.env.MYSQLDB_DATABASE,
-	port: 3306
-});
+
+// Define the connection details for the backend database.
+const connection = backend.createDbConnection(mysql);
+
+// Start the Web-Socket server.
+var ws = new WebSocketServer({server:httpSocket});
+
+// Create the database connection on start, creating the table if this is the first time.
 connection.connect(function(err) {
 	if (err) {
 	  console.error('error connecting: ' + err.stack);
 	  return;
 	}
-	console.log('Connected to <' + process.env.DB_NAME + '> as id ' + connection.threadId);
-	var createPrivTable = "CREATE TABLE IF NOT EXISTS privacy (key_id varchar(500), lat decimal(6,4), lon decimal(7,4))";
-	connection.query(createPrivTable, function(err, results, fields) {
-		if (err) { 
-			console.log("Create table fail");
-		}
-		console.log(results);
-		console.log("yo");
-	});
 
-	var selPrivTable = "SELECT * FROM privacy";
-	connection.query(selPrivTable, function(err, results, fields) {
-		if (err) {
-			console.log("Can not select from privacy");
-		  	console.log(fields);
-		}
-		console.log(results);
-		console.log("lat = %d\n", results[0].lat);
-	});
-
+	// Create the table if neccessary.
+	backend.createTable(connection);
 });
-// Grab the API key for ipstack.com in order to get latitude and longitude data from the user.
-var accessKey = process.env.IPSTACK_API;
 
+// Configure the application for express and parsing.
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 extended: true
 }));
 
-app.use(express.urlencoded({ extended: true }));
-const pageContentFile = fs.readFileSync("./public/content.json");
-
 // Start the application server.
-app.listen(PORT, () => {
-	console.log("Application server is running");
-});
+app.listen(PORT, () => {console.log("Application server is running");});
 
-
-// Random Key Generator.
-function randomKey(){
-	let keyCode = '';
-	for (let i = 0; i < 64; i++){
-		keyCode += String.fromCharCode(97 + Math.floor(Math.random() * 26));
-	}
-	return keyCode;
-}
-
+// On successful connection to port 80, send the index.html file to the user.
 app.get('/', (req, res) => {
 	res.sendFile('/public/index.html', {root: __dirname});
 });
 
-/*  This is called when a user first visits the site. Uses ipstack.com to find the latitude, longtitude and city.
-	Creates a cookie and sends it back to the user. The latitude and longitude are then passed into the Google Maps API.
-	A check is performed on the client to only request locationcontent if the cookie does not exist.
-	This reduces the amount of calls on the ipstack.com API, and also demonstrates how cookies can be used to identify
-	if a user has visited the site before.
-*/
-app.get('/key', (req, res) => {
-	console.log("getting new key")
+// Create a new database entry if there is a new user, otherwise query previous information and send it to the client.
+app.get('/key', async (req, res) => {
 	var cookie = req.cookies.key;
+
+	// New user.
 	if(cookie === undefined){
-		// No key present, so query the ip and grab the latitude and longitude used for the map. 
-		let key = randomKey();
+		console.log("New user connected.");
+		// Create a new key to identify the user.
+		let key = backend.generateKey();
+		res.cookie('key', key);
 
-		//TODO query database if the key exists, and if so, send all of the information needed to the user.
+		// Send the generated cookie so it's associated once we receive the callback for the requested data.
+		res.send('Success');
 
-
-		// Else, key does not exist in database.
-		// Use the ip address and call ipstack to get latitude and longitude to store in database.
-		var address = req.socket.remoteAddress;
-		address = address.substring(address.lastIndexOf(":")+1,address.length);
-
-		// Check the address to make sure it is not localhost.
-		// If the address is empty, the ip-api site automatically uses the ip address from the requesting computer.
-		// Which would be this server. Useful when in development.
-		if(address == "0.0.0.0" || address == "127.0.0.1"){
-			address = "";
-		}
-		http.get('http://ip-api.com/json/', (resp) => {
-			let data = '';
-			
-			resp.on('data', (chunk) => {
-				data = JSON.parse(chunk);
-				res.cookie('key', key);
-
-				// Temporarily setting the latitude and longitude for the map to work as cookies.
-				//TODO remove these lat/lon cookies 
-				res.cookie('lat',data.lat);
-				res.cookie('lon',data.lon);
-			});
-			
-			resp.on('end', () => {
-				console.log("Key saved");
-				console.log("New key insert");
-				console.log(key);
-				connection.query("INSERT INTO privacy SET ?",
-				{
-					key_id: key,
-					lat: data.lat,
-					lon: data.lon
-				},
-				function(err, res) {
-					if (err) throw err;
-						console.log("Insert fail");
-						console.log(res);
-					});
-				console.log(data);
-				res.send('Success');
-			});
-		});
+		// Request an update of information from the client, and write to the database.
+		await backend.requestDataUpdate(ws,connection);
+		console.log("Done with new user");
 	}
-});
 
-//TODO refactor the sitecontent, we should make several queries here where we can get data from the database
-// without opening it up to sql injections.
-// Example queries could be '/location' which would return lat/lon values, '/device' to return all device info, etc.
-/*  Sends the content.json file to the site. This is used to access the actual content of the website,
-	and dynamically generate/fill different sections of the website as the user navigates to them.
-*/
-app.get('/sitecontent', (req, res) => {
-	var address = req.socket.remoteAddress;
-	address = address.substring(address.lastIndexOf(":")+1,address.length);
-	var cookie = req.cookies.city;
-	if(cookie === undefined){
-		console.log("New connection to the site: "+address);
-	}
+	// Existing user.
 	else{
-		console.log("Refreshed connection from: "+address);
+		// TODO refactor this, as the existing user isn't being recognized. Server listening might be
+		// getting trapped in requestDataUpdate().
+		console.log("Existing user connected.");
+		// Grab the user's data from the database using the cookie identifier key.
+		// Send the stored data to the client.
+		backend.sendData(ws,data);
+		res.send('Success');
 	}
-	res.sendFile('/public/content.json', {root: __dirname});
 });
 
-//let connection = require("./dbconfig");
-
-/*  Start the server. Because port 80 is reserved, sudo is required to start the server.
-	User must also ensure that networking is properly port-forwarding port 80 to the server's ip address.
-	(Note: Upgrading to https will require switching the port to 443, but will also force the user to receive
-	a popup screen stating that self-signed certificates are unsafe. To avoid this, http has been preferred.
-*/
-
-app.post("/data", (req, resp) => {
-	resp.json([{
-		long: req.body.long,
-		key: req.body.key,
-		lat: req.body.lat
-	}])
-	personnelData.key = '' + req.body.key;
-	personnelData.long = req.body.long;
-	personnelData.lat = req.body.lat;
-	console.log(personnelData);
- })
-
-// Start the Web-Socket server.
-var ws = new WebSocketServer({server:httpSocket});
-
-ws.on('connection', function (ws, req) {
-	console.log("Connection: "+req.connection.remoteAddress);
-
-	ws.on('message', function (data) {
-		console.log("Received: *"+data+"*");
-		ws.send("message:I received your message!");
-	});
-});
-
-
+// Start listening on the Websocket server.
 httpSocket.listen(8005, function () {
 	console.log("Websocket server is running");
 });

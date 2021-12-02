@@ -1,38 +1,27 @@
 // Request/generate the key for the user.
 if(document.cookie.length < 1){
-	console.log("Requesting new key");
 	let keyrequest = new XMLHttpRequest("8005");
 	keyrequest.open('GET', '/key');
 	keyrequest.responseType = 'json';
 	keyrequest.send();
 	keyrequest.onload = function(){
-		const keyData = locrequest.response;
+		//TODO potentially refactor keyData to look at document.cookie instead.
+		const keyData = keyrequest.response;
+
 		setInterval(initMap(),200);
+
+		// Activate zooming map.
+		zoomSys = setInterval(zoomFunc, 200);
+
+		// Scan local network map.
+		//scanLocalNetwork();
+
+		// Populate network card with found connections after 3 seconds.
+		setTimeout(function(){
+			// Render out a visualization of the user's port-80 visible local network.
+			visualizeNetwork();
+		},3000);
 	}
-}
-
-//TODO refactor this to request a json frame for information gathered.
-// Receive the content for the website via JSON file.
-let request = new XMLHttpRequest();
-request.open('GET', '/sitecontent');
-request.responseType = 'json';
-request.send();
-var pageContent;
-request.onload = function(){
-	const jsonText = request.response;
-	pageContent = jsonText;
-
-	// Activate zooming map.
-	zoomSys = setInterval(zoomFunc, 200);
-
-	// Scan local network map.
-	//scanLocalNetwork();
-
-	// Populate network card with found connections after 3 seconds.
-	setTimeout(function(){
-		// Render out a visualization of the user's port-80 visible local network.
-		visualizeNetwork();
-	},3000);
 }
 
 function zoomFunc() {
@@ -49,11 +38,10 @@ function zoomFunc() {
 
 
 // Manage the map function.
-
-
 var map;
 function initMap() {
-	setTimeout(function(){	
+	setTimeout(function(){
+		if(latVal && lnVal && latVal[1] && lngVal[1]){
 		var coords = document.cookie.split(" ");
 		var latVal = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length); 
 		var lngVal = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length); 
@@ -64,10 +52,15 @@ function initMap() {
 		disableDefaultUI: true,
 		zoomControl: false,
 		zoom: 2});
+		}
+		else{
+			console.log("Could not initialize map, no coordinates available.");
+		}
 	},1000);
 
 }
-//below this comment is the JQuery to handle API requests
+
+// Below this comment is the JQuery to handle API requests
 $(window).on("load",function() {
     var wData = {
 	  key: "",
@@ -99,53 +92,57 @@ $(window).on("load",function() {
 
     function weather(){
 		var coords = document.cookie.split(" ");
-		var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
-		var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
-    	wData.lat = lat;
-		wData.long = long;
-	var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=minutely,hourly" + "&appid=209f024f18b94911ca5d243388fea797";
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-        }).then(function(response) { 
-			console.log(response);
-			wData.weather = response.current.weather[0];
-			// response.current.weather[0].main = "Clouds";
-			console.log(wData.weather)
-			$("#icon").empty(iconSelector(response.current.weather[0].icon));       
-			$("#icon").append(iconSelector(response.current.weather[0].icon));
-			if (response.current.weather[0].main === "Rain"){
-				$("#sell").text("Buy a head umbrella to stay dry and keep your hands free so you can deal with everyday life with both hands. $12.99 can change your entire life.")
-				$("#pic1").attr("src","images/chrome-capture (4).jpg");
-				$("#pic2").attr("src","images/chrome-capture (5).jpg");
-			} 	else if (response.current.weather[0].main === "Clouds"){
-				$("#sell").text("Buy a hoody to stay warm in this cooler then normal weather. $24.99 and you can have this incredibly comfortable and stylish outerwear")
-				$("#pic1").attr("src","images/chrome-capture (6).jpg");
-				$("#pic2").attr("src","images/chrome-capture (7).jpg");
-			} 	else if (response.current.weather[0].main === "Mist"){
-				$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this. Our joy comes from your happiness!")
-				$("#pic1").attr("src","images/chrome-capture (8).jpg");
-				$("#pic2").attr("src","images/chrome-capture (9).jpg");
-			}	else if (response.current.weather[0].main === "Clear"){
-				$("#sell").text("A nice pair of shades to protect your eyes from the higher UV's on this bright sunny day. Buy these stylish sunglasses for just $199.")
-				$("#pic1").attr("src","images/chrome-capture (10).jpg");
-				$("#pic2").attr("src","images/chrome-capture (11).jpg");
-			}	else if (response.current.weather[0].main === "Thunderstorm"){
-				$("#sell").text("Buy these electric proof golf clubs and golf in any weather. for just $24,999 you can safely golf in the worst lightning storms. Our patented composite design is the only safe way to guarantee your game. If you are electrocuted while holding these clubs within 3 years of purchase you get a full refund.")
-				$("#pic1").attr("src","images/chrome-capture (12).jpg");
-				$("#pic2").attr("src","images/chrome-capture (13).jpg");
-			}	else if (response.current.weather[0].main === "Drizzle"){
-				$("#sell").text("A raincoat would be perfect today, and we have them in all styles and sizes. They are made from wool and cotton and dyes completely safe for the environment, we promise.")
-				$("#pic1").attr("src","images/chrome-capture (14).jpg");
-				$("#pic2").attr("src","images/chrome-capture (15).jpg");
-			}	else if (response.current.weather[0].main === "Snow"){
-				$("#sell").text("Since we know global warming is a farce and the reality is snowpocalypse is on its way, we want to help you survive the coming cold armageddon. For $250,000(per person) we will give you a kit guaranteed to keep you alive for 3 years at temperatures as low as -20 fahrenheit.")
-				$("#pic1").attr("src","images/chrome-capture (17).jpg");
-				$("#pic2").attr("src","images/chrome-capture (18).jpg");
-			}
-			return data;
-		});
-    
+		if(coords && coords[1] && coords[2]){
+			var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
+			var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
+			wData.lat = lat;
+			wData.long = long;
+		var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=minutely,hourly" + "&appid=209f024f18b94911ca5d243388fea797";
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+			}).then(function(response) { 
+				console.log(response);
+				wData.weather = response.current.weather[0];
+				// response.current.weather[0].main = "Clouds";
+				console.log(wData.weather)
+				$("#icon").empty(iconSelector(response.current.weather[0].icon));       
+				$("#icon").append(iconSelector(response.current.weather[0].icon));
+				if (response.current.weather[0].main === "Rain"){
+					$("#sell").text("Buy a head umbrella to stay dry and keep your hands free so you can deal with everyday life with both hands. $12.99 can change your entire life.")
+					$("#pic1").attr("src","images/chrome-capture (4).jpg");
+					$("#pic2").attr("src","images/chrome-capture (5).jpg");
+				} 	else if (response.current.weather[0].main === "Clouds"){
+					$("#sell").text("Buy a hoody to stay warm in this cooler then normal weather. $24.99 and you can have this incredibly comfortable and stylish outerwear")
+					$("#pic1").attr("src","images/chrome-capture (6).jpg");
+					$("#pic2").attr("src","images/chrome-capture (7).jpg");
+				} 	else if (response.current.weather[0].main === "Mist"){
+					$("#sell").text("Come in for a hot coffee or cocoa on a dreary day like this. Our joy comes from your happiness!")
+					$("#pic1").attr("src","images/chrome-capture (8).jpg");
+					$("#pic2").attr("src","images/chrome-capture (9).jpg");
+				}	else if (response.current.weather[0].main === "Clear"){
+					$("#sell").text("A nice pair of shades to protect your eyes from the higher UV's on this bright sunny day. Buy these stylish sunglasses for just $199.")
+					$("#pic1").attr("src","images/chrome-capture (10).jpg");
+					$("#pic2").attr("src","images/chrome-capture (11).jpg");
+				}	else if (response.current.weather[0].main === "Thunderstorm"){
+					$("#sell").text("Buy these electric proof golf clubs and golf in any weather. for just $24,999 you can safely golf in the worst lightning storms. Our patented composite design is the only safe way to guarantee your game. If you are electrocuted while holding these clubs within 3 years of purchase you get a full refund.")
+					$("#pic1").attr("src","images/chrome-capture (12).jpg");
+					$("#pic2").attr("src","images/chrome-capture (13).jpg");
+				}	else if (response.current.weather[0].main === "Drizzle"){
+					$("#sell").text("A raincoat would be perfect today, and we have them in all styles and sizes. They are made from wool and cotton and dyes completely safe for the environment, we promise.")
+					$("#pic1").attr("src","images/chrome-capture (14).jpg");
+					$("#pic2").attr("src","images/chrome-capture (15).jpg");
+				}	else if (response.current.weather[0].main === "Snow"){
+					$("#sell").text("Since we know global warming is a farce and the reality is snowpocalypse is on its way, we want to help you survive the coming cold armageddon. For $250,000(per person) we will give you a kit guaranteed to keep you alive for 3 years at temperatures as low as -20 fahrenheit.")
+					$("#pic1").attr("src","images/chrome-capture (17).jpg");
+					$("#pic2").attr("src","images/chrome-capture (18).jpg");
+				}
+				return data;
+			});
+		}
+		else{
+			console.log("Could not render weather.");
+		}
     }
   	function iconSelector(icon){
     	var iconImg = $("<img>");
@@ -231,7 +228,6 @@ $(window).on("load",function() {
 			$("#economics").text("$" + responds.results[0].fields.acs.economics['Median household income'].Total.value + " annually is the average household income")
 			
 			})
-	}
 	function chart() { 
 	$("#chartContainer").CanvasJSChart({ 
 		title: { 
@@ -268,7 +264,8 @@ $(window).on("load",function() {
 			] 
 		} 
 		] 
-	}); 
+	});
+	}
 }
 function chart2() { 
 	$("#chartContainer2").CanvasJSChart({ 

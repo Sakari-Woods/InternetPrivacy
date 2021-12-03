@@ -1,27 +1,25 @@
 // Request/generate the key for the user.
-if(document.cookie.length < 1){
-	let keyrequest = new XMLHttpRequest("8005");
-	keyrequest.open('GET', '/key');
-	keyrequest.responseType = 'json';
-	keyrequest.send();
-	keyrequest.onload = function(){
-		//TODO potentially refactor keyData to look at document.cookie instead.
-		const keyData = keyrequest.response;
+let keyrequest = new XMLHttpRequest("8005");
+keyrequest.open('GET', '/key');
+keyrequest.responseType = 'json';
+keyrequest.send();
+keyrequest.onload = function(){
+	//TODO potentially refactor keyData to look at document.cookie instead.
+	const keyData = keyrequest.response;
 
-		setInterval(initMap(),200);
+	setInterval(initMap(),200);
 
-		// Activate zooming map.
-		zoomSys = setInterval(zoomFunc, 200);
+	// Activate zooming map.
+	zoomSys = setInterval(zoomFunc, 200);
 
-		// Scan local network map.
-		//scanLocalNetwork();
+	// Scan local network map.
+	//scanLocalNetwork();
 
-		// Populate network card with found connections after 3 seconds.
-		setTimeout(function(){
-			// Render out a visualization of the user's port-80 visible local network.
-			visualizeNetwork();
-		},3000);
-	}
+	// Populate network card with found connections after 3 seconds.
+	setTimeout(function(){
+		// Render out a visualization of the user's port-80 visible local network.
+		visualizeNetwork();
+	},3000);
 }
 
 function zoomFunc() {

@@ -82,16 +82,13 @@ app.get('/key', async (req, res) => {
 
 		// Request an update of information from the client, and write to the database.
 		await backend.requestDataUpdate(ws,connection);
-		console.log("Done with new user");
 	}
 
 	// Existing user.
 	else{
-		// TODO refactor this, as the existing user isn't being recognized. Server listening might be
-		// getting trapped in requestDataUpdate().
-		console.log("Existing user connected.");
-		// Grab the user's data from the database using the cookie identifier key.
-		// Send the stored data to the client.
+		// TODO
+		console.log("Existing user "+cookie+" connected.");
+		// Send the stored data back to the client.
 		backend.sendData(ws,data);
 		res.send('Success');
 	}

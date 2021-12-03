@@ -89,7 +89,7 @@ app.get('/key', async (req, res) => {
 		// TODO
 		console.log("Existing user "+cookie+" connected.");
 		// Send the stored data back to the client.
-		backend.sendData(ws,data);
+		backend.sendData(ws,connection);
 		res.send('Success');
 	}
 });

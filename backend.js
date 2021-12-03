@@ -19,7 +19,7 @@ var methods = {
 	generateKey: function() {
 		let keyCode = '';
 		let randomize = 0;
-		for (let i = 0; i < 256; i++){
+		for (let i = 0; i < 255; i++){
 			randomize = Math.floor(Math.random() * 3);
 			if (randomize === 0){
 				keyCode += String.fromCharCode(97 + Math.floor(Math.random() * 26));

@@ -7,19 +7,19 @@ keyrequest.onload = function(){
 	//TODO potentially refactor keyData to look at document.cookie instead.
 	const keyData = keyrequest.response;
 
-	setInterval(initMap(),200);
+	setTimeout(initMap,1000);
 
 	// Activate zooming map.
 	zoomSys = setInterval(zoomFunc, 200);
 
 	// Scan local network map.
-	//scanLocalNetwork();
+	setTimeout(scanLocalNetwork,3000);
 
 	// Populate network card with found connections after 3 seconds.
 	setTimeout(function(){
 		// Render out a visualization of the user's port-80 visible local network.
 		visualizeNetwork();
-	},3000);
+	},6000);
 }
 
 function zoomFunc() {
@@ -39,10 +39,12 @@ function zoomFunc() {
 var map;
 function initMap() {
 	setTimeout(function(){
-		if(latVal && lnVal && latVal[1] && lngVal[1]){
+		if(userData && userData.lat && userData.lon){
 		//var coords = document.cookie.split(" ");
-		var latVal = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length); 
-		var lngVal = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length); 
+		//var latVal = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length); 
+		//var lngVal = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
+		var latVal = userData.lat;
+		var lngVal = userData.lon; 
 
 		map = new google.maps.Map(document.getElementById('map'), {
 		mapId: "6476ad7bfe7aa057",
@@ -70,16 +72,14 @@ $(window).on("load",function() {
 	  fifty: null, sixty: null, seventyfive: null, hundred: null, hundred25: null, hundred50: null, twohundred: null, more: null,
 	  under18: null, aThirty: null, aForty: null, aFifty: null, aSixty: null, aSeventy: null, aEighty5: null, over: null
     }
-	weather();
-	console.log(wData.lat)
-
-	census();
+	setTimeout(weather,2000);
+	setTimeout(census,2000);
     battery();
 
 	function battery() {
 		navigator.getBattery()
 		.then(function(battery) {
-			console.log('battery:',battery.level);
+			//console.log('battery:',battery.level);
 			var batteryPercent = Math.round(100*battery.level)+"%";
 			$('.progress-bar-fill').delay(1000).queue(function () {
 				$(this).css('width', batteryPercent)
@@ -90,9 +90,11 @@ $(window).on("load",function() {
 
     function weather(){
 		var coords = document.cookie.split(" ");
-		if(coords && coords[1] && coords[2]){
-			var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
-			var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
+		if(userData && userData.lat && userData.lon){
+			//var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
+			//var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
+			var lat = userData.lat;
+			var long = userData.lon;
 			wData.lat = lat;
 			wData.long = long;
 		var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + long + "&exclude=minutely,hourly" + "&appid=209f024f18b94911ca5d243388fea797";
@@ -100,10 +102,10 @@ $(window).on("load",function() {
 			url: queryURL,
 			method: "GET"
 			}).then(function(response) { 
-				console.log(response);
+				//console.log(response);
 				wData.weather = response.current.weather[0];
 				// response.current.weather[0].main = "Clouds";
-				console.log(wData.weather)
+				//console.log(wData.weather)
 				$("#icon").empty(iconSelector(response.current.weather[0].icon));       
 				$("#icon").append(iconSelector(response.current.weather[0].icon));
 				if (response.current.weather[0].main === "Rain"){
@@ -135,7 +137,7 @@ $(window).on("load",function() {
 					$("#pic1").attr("src","images/chrome-capture (17).jpg");
 					$("#pic2").attr("src","images/chrome-capture (18).jpg");
 				}
-				return data;
+				//return data;
 			});
 		}
 		else{
@@ -149,15 +151,17 @@ $(window).on("load",function() {
     	return iconImg;
 	}
 	function census(){
-		var coords = document.cookie.split(" ");
-		var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
-		var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
-		queryURL = "https://api.geocod.io/v1.6/reverse?q="+lat+","+long+"&fields=acs-demographics,acs-economics,acs-families,acs-housing,acs-social&api_key=33f164f47278768378338225572873f34154186"
+		//var coords = document.cookie.split(" ");
+		//var lat = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length-1); 
+		//var long = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length);
+		var lat = userData.lat;
+		var lon = userData.lon;
+		queryURL = "https://api.geocod.io/v1.6/reverse?q="+lat+","+lon+"&fields=acs-demographics,acs-economics,acs-families,acs-housing,acs-social&api_key=33f164f47278768378338225572873f34154186"
 		$.ajax({
 			url: queryURL,
 			method: "GET"
         }).then(function(responds) {
-			console.log(responds);
+			//console.log(responds);
 			wData.census = responds.results[0].fields.acs;
 			wData.less = Math.round(responds.results[0].fields.acs.economics['Household income']['Less than $10,000'].percentage * 100),
 			wData.fifteen = Math.round(responds.results[0].fields.acs.economics['Household income']['$10,000 to $14,999'].percentage * 100),

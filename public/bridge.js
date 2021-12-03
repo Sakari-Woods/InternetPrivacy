@@ -11,7 +11,7 @@ ws.onopen = function(event) {
 };
 
 ws.onmessage = function(event) {
-	console.log("Received data from the server: *"+event.data+"*");
+	console.log("Received from server: *"+event.data+"*");
 	if(event.data.toString() == "message:update-request"){
 
 		// Send the collected data as an update.
@@ -24,17 +24,12 @@ ws.onmessage = function(event) {
 		ws.send(JSON.stringify(dataSend));
 	}
 	else{
-		console.log("RECEIVED MESSAGE:");
-		console.log(event.data);
 		var received = event.data;
 		// Handle the information if they are coordinates.
 		if(received && received.substring(0,3) == "lat"){
 			var receivedCoords = received.split(" ");
 			userData.lat = receivedCoords[0].split(":")[1];
 			userData.lon = receivedCoords[1].split(":")[1];
-
-			console.log("userData:");
-			console.log(userData);
 		}
 	}
 };

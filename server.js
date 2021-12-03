@@ -67,7 +67,7 @@ app.get('/', (req, res) => {
 });
 
 // Create a new database entry if there is a new user, otherwise query previous information and send it to the client.
-app.get('/key', async (req, res) => {
+app.get('/key', (req, res) => {
 	var cookie = req.cookies.key;
 
 	// New user.
@@ -81,7 +81,7 @@ app.get('/key', async (req, res) => {
 		res.send('Success');
 
 		// Request an update of information from the client, and write to the database.
-		await backend.requestDataUpdate(ws,connection);
+		backend.requestDataUpdate(ws,connection,req,http,ws);
 	}
 
 	// Existing user.

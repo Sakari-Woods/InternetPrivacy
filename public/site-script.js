@@ -40,7 +40,7 @@ var map;
 function initMap() {
 	setTimeout(function(){
 		if(latVal && lnVal && latVal[1] && lngVal[1]){
-		var coords = document.cookie.split(" ");
+		//var coords = document.cookie.split(" ");
 		var latVal = coords[1].substring(coords[1].lastIndexOf('=')+1,coords[1].length); 
 		var lngVal = coords[2].substring(coords[2].lastIndexOf('=')+1,coords[2].length); 
 

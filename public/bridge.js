@@ -11,7 +11,9 @@ ws.onmessage = function(event) {
 		// Send the collected data as an update.
 		var dataSend = {
 			"key": document.cookie.substring(document.cookie.indexOf("=")+1),
-			"data": "blah blah blah"
+			"data": "blah blah blah",
+			"lat": 12.0000,
+			"lon": 13.0000
 		};
 
 		ws.send(JSON.stringify(dataSend));

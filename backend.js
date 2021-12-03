@@ -142,7 +142,7 @@ var methods = {
 												}
 												else{
 													//TODO suppress this as it might output multiple times, due to above note.
-													console.log("Added "+receivedData.key+" to the database.");
+													console.log("Added "+receivedData.key+" to the database with coords "+coords.lat+" and "+coords.lon);
 												}
 											});
 										});
@@ -161,11 +161,19 @@ var methods = {
 		});
 	},
 
-	sendData: function(ws,data) {
+	sendData: function(ws,connection,key) {
 		ws.on('connection', function (wss, req) {
-			wss.send(data);
-			console.log("SENT TO CLIENT:");
-			console.log(data);
+			var selectQuery = "SELECT * FROM privacy WHERE key_id = '"+key+"';";
+			connection.query(selectQuery, function(err, result) {
+				if (err) {
+					console.log("Could not check key_id");
+				}
+				else{
+					console.log("Existing user, sending database results:");
+					console.log(result);
+					wss.send("lat:"+result[0].lat+" lng:"+result[0].lon);
+				}
+			});
 		});
 	}
 };

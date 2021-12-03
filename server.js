@@ -86,10 +86,10 @@ app.get('/key', (req, res) => {
 
 	// Existing user.
 	else{
-		// TODO
+		// TODO use the cookie and query the database, then send info to the user instead of having client collect data.
 		console.log("Existing user "+cookie+" connected.");
 		// Send the stored data back to the client.
-		backend.sendData(ws,connection);
+		backend.sendData(ws,connection,cookie);
 		res.send('Success');
 	}
 });

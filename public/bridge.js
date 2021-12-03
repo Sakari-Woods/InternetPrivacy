@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://localhost:8005"); // sakaribox.ddns.net
+var ws = new WebSocket("ws://sakaribox.ddns.net:8005"); // sakaribox.ddns.net
 
 // Create the userData object.
 let userData = {
@@ -17,9 +17,7 @@ ws.onmessage = function(event) {
 		// Send the collected data as an update.
 		var dataSend = {
 			"key": document.cookie.substring(document.cookie.indexOf("=")+1),
-			"data": "more data can be sent here",
-			"lat": 12.0000,
-			"lon": 13.0000
+			"data": "more data can be sent here"
 		};
 		ws.send(JSON.stringify(dataSend));
 	}

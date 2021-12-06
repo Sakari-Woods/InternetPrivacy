@@ -17,14 +17,14 @@ List of data collection methods explored:
 
 # How It Works
 
-Additional information of the architecture can be found on the [Architecture](Architecture) wiki page.
+Additional information of the architecture can be found on the [Architecture](https://github.com/Sakari-Woods/InternetPrivacy/wiki/Architecture) wiki page.
 
 This diagram shows the relationships between the different components of the privacy site:
 ![Privacy Site UML Diagram](https://github.com/Sakari-Woods/InternetPrivacy/blob/main/docs/PrivacyDiagramUML.png)
 
 # Getting Started
 
-Please visit the [Getting Started](Getting-Started) wiki page for information on installation steps and how to run the application.
+Please visit the [Getting Started](https://github.com/Sakari-Woods/InternetPrivacy/wiki/Getting-Started) wiki page for information on installation steps and how to run the application.
 
 # Conclusions
 

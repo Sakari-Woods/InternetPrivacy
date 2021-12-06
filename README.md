@@ -17,13 +17,19 @@ List of data collection methods explored:
 
 # How It Works
 
-(small description here on the architecture of the site, with links for more detailed information to the Architecture wikipage)
+Additional information of the architecture can be found on the [Architecture](Architecture) wiki page.
 
-(image of the UML diagram of architecture design)
+This diagram shows the relationships between the different components of the privacy site:
+![Privacy Site UML Diagram](https://github.com/Sakari-Woods/InternetPrivacy/blob/main/docs/PrivacyDiagramUML.png)
 
-(image of UML sequence diagram on new user visit + existing user visit)
+# Getting Started
 
+Please visit the [Getting Started](Getting-Started) wiki page for information on installation steps and how to run the application.
 
 # Conclusions
 
-(our conclusions and discoveries after developing the site and conducting research on the various data collection methods and their industry uses can go here, with more detailed information pointing to a wikipage via link)
+* A surprising amount of data can be collected from the web browser alone.
+* Many internet users are not aware of what can be collected and what it could be used for.
+* User privacy preferences are not always respected by companies.
+* Third party cookies can track and follow users throughout the internet.
+* Steps can be taken to improve browsing privacy, but they may affect the functionality of a website.

@@ -13,7 +13,9 @@ List of data collection methods explored:
 * Local census data from user's location
 * How many devices are on the user's home network (local port 80 scan)
 
-(animated gif showing website here)
+[3 Minute Demonstration Video](https://drive.google.com/file/d/1QgymsnrpjeuXbPohAjePK2figV_i3WBe/view?usp=sharing)
+
+[Read the Design Proposal](https://docs.google.com/document/d/1XUprLbdN8xd6-WU3FdBVCW8VW5NwiIxBrcxivDbFNUM/view)
 
 # How It Works
 
